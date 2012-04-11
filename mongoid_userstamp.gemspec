@@ -29,7 +29,8 @@ Gem::Specification.new do |s|
     "lib/mongoid/userstamp/railtie.rb",
     "lib/mongoid/userstamp/user.rb",
     "lib/mongoid/userstamp/version.rb",
-    "lib/mongoid_userstamp.rb"
+    "lib/mongoid_userstamp.rb",
+    "mongoid_userstamp.gemspec"
   ]
   s.homepage = "https://github.com/Langwhich/mongoid_userstamp"
   s.licenses = ["MIT"]
