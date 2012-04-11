@@ -1,0 +1,7 @@
+.DS_Store
+
+.yardoc
+.bundle
+
+pkg
+doc
