@@ -28,11 +28,15 @@ module Mongoid
       protected
         def set_updator
           column = "#{Mongoid::Userstamp.configuration.updated_column.to_s}=".to_sym
+          return unless Mongoid::Userstamp.configuration.user_model.respond_to? column
+
           self.send(column, Mongoid::Userstamp.configuration.user_model.current.try(:id))
         end
 
         def set_creator
           column = "#{Mongoid::Userstamp.configuration.created_column.to_s}=".to_sym
+          return unless Mongoid::Userstamp.configuration.user_model.respond_to? column
+
           self.send(column, Mongoid::Userstamp.configuration.user_model.current.try(:id))
         end
     end
