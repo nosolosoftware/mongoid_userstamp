@@ -1,4 +1,4 @@
-# MongoidUserstamp [![Build Status](https://secure.travis-ci.org/Langwhich/mongoid_userstamp)](https://secure.travis-ci.org/Langwhich/mongoid_userstamp.png)
+# MongoidUserstamp [![Build Status](https://secure.travis-ci.org/Langwhich/mongoid_userstamp.png)](https://secure.travis-ci.org/Langwhich/mongoid_userstamp)
 
 MongoidUserstamp adds stamp columns for created by and updated by
 informations within rails applications.
