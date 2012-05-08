@@ -20,7 +20,7 @@ informations within rails applications.
    c.created_column = :created_by
    c.created_accessor = :creator
 
-   c.updated_column = :updator_by
+   c.updated_column = :updated_by
    c.updated_accessor = :updator
  end
 
