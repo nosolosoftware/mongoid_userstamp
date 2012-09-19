@@ -1,7 +1,8 @@
 .DS_Store
 
-.yardoc
-.bundle
+/.idea
+/.yardoc
+/.bundle
 
-pkg
-doc
+/pkg
+/doc

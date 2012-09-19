@@ -16,6 +16,7 @@ GEM
       rake
       rdoc
     json (1.6.6)
+    magic_encoding (0.0.2)
     mongoid (3.0.4)
       activemodel (~> 3.1)
       moped (~> 1.1)
@@ -29,13 +30,16 @@ GEM
       json (~> 1.4)
     redcarpet (2.1.1)
     tzinfo (0.3.33)
-    yard (0.7.5)
+    whitespace (2.0.4)
+    yard (0.8.2.1)
 
 PLATFORMS
   ruby
 
 DEPENDENCIES
   jeweler (~> 1.8.3)
+  magic_encoding (~> 0.0.2)
   mongoid (~> 3.0.4)
   redcarpet (~> 2.1.0)
-  yard (~> 0.7.5)
+  whitespace (~> 2.0.4)
+  yard (~> 0.8.2.1)

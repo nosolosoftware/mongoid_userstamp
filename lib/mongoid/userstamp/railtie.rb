@@ -17,4 +17,3 @@ module Mongoid
     end
   end
 end
-

@@ -1,4 +1,4 @@
-# MongoidUserstamp [![Build Status](https://secure.travis-ci.org/Langwhich/mongoid_userstamp.png)](https://secure.travis-ci.org/Langwhich/mongoid_userstamp)
+# MongoidUserstamp [![Build Status](https://secure.travis-ci.org/tbpro/mongoid_userstamp.png)](https://secure.travis-ci.org/#!/tbpro/mongoid_userstamp)
 
 MongoidUserstamp adds stamp columns for created by and updated by
 informations within rails applications.
@@ -52,4 +52,4 @@ informations within rails applications.
 
 ## Credits
 
-Copyright (c) 2012 Langwhich GmbH <http://www.langwhich.com>
+Copyright (c) 2012 Thomas Boerger Programmierung <http://www.tbpro.de>

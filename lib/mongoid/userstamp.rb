@@ -48,8 +48,7 @@ module Mongoid
 
       def configuration
         @configuration ||= Mongoid::Userstamp::Config.new
-      end 
+      end
     end
   end
 end
-
