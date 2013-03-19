@@ -18,11 +18,13 @@ module Mongoid
       before_create :set_creator
 
       define_method Mongoid::Userstamp.configuration.updated_accessor do
-        Mongoid::Userstamp.configuration.user_model.find(self.send(Mongoid::Userstamp.configuration.updated_column))
+        updated_col = self.send(Mongoid::Userstamp.configuration.updated_column)
+        updated_col ? Mongoid::Userstamp.configuration.user_model.find(updated_col) : nil
       end
 
       define_method Mongoid::Userstamp.configuration.created_accessor do
-        Mongoid::Userstamp.configuration.user_model.find(self.send(Mongoid::Userstamp.configuration.created_column))
+        created_col = self.send(Mongoid::Userstamp.configuration.created_column)
+        created_col ? Mongoid::Userstamp.configuration.user_model.find(created_col) : nil
       end
 
       protected
