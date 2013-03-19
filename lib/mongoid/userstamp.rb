@@ -9,8 +9,6 @@ module Mongoid
     autoload :User, 'mongoid/userstamp/user'
 
     included do
-      include Mongoid::Timestamps
-
       field Mongoid::Userstamp.configuration.updated_column, :type => Object
       field Mongoid::Userstamp.configuration.created_column, :type => Object
 
