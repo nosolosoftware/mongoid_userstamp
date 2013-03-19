@@ -30,7 +30,10 @@ Gem::Specification.new do |s|
     "lib/mongoid/userstamp/user.rb",
     "lib/mongoid/userstamp/version.rb",
     "lib/mongoid_userstamp.rb",
-    "mongoid_userstamp.gemspec"
+    "mongoid_userstamp.gemspec",
+    "spec/models.rb",
+    "spec/spec_helper.rb",
+    "spec/userstamp_spec.rb"
   ]
   s.homepage = "https://github.com/tbpro/mongoid_userstamp"
   s.licenses = ["MIT"]
@@ -43,6 +46,7 @@ Gem::Specification.new do |s|
 
     if Gem::Version.new(Gem::VERSION) >= Gem::Version.new('1.2.0') then
       s.add_runtime_dependency(%q<mongoid>, [">= 3.0.4"])
+      s.add_development_dependency(%q<rspec>, [">= 2.13.0"])
       s.add_development_dependency(%q<redcarpet>, [">= 2.1.0"])
       s.add_development_dependency(%q<yard>, [">= 0.8.2.1"])
       s.add_development_dependency(%q<jeweler>, [">= 1.8.3"])
@@ -50,6 +54,7 @@ Gem::Specification.new do |s|
       s.add_development_dependency(%q<whitespace>, [">= 2.0.4"])
     else
       s.add_dependency(%q<mongoid>, [">= 3.0.4"])
+      s.add_dependency(%q<rspec>, [">= 2.13.0"])
       s.add_dependency(%q<redcarpet>, [">= 2.1.0"])
       s.add_dependency(%q<yard>, [">= 0.8.2.1"])
       s.add_dependency(%q<jeweler>, [">= 1.8.3"])
@@ -58,6 +63,7 @@ Gem::Specification.new do |s|
     end
   else
     s.add_dependency(%q<mongoid>, [">= 3.0.4"])
+    s.add_dependency(%q<rspec>, [">= 2.13.0"])
     s.add_dependency(%q<redcarpet>, [">= 2.1.0"])
     s.add_dependency(%q<yard>, [">= 0.8.2.1"])
     s.add_dependency(%q<jeweler>, [">= 1.8.3"])
