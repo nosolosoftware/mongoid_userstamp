@@ -17,7 +17,6 @@ GEM
       rake
       rdoc
     json (1.7.7)
-    magic_encoding (0.0.2)
     mongoid (3.1.2)
       activemodel (~> 3.2)
       moped (~> 1.4.2)
@@ -39,7 +38,6 @@ GEM
       diff-lcs (>= 1.1.3, < 2.0)
     rspec-mocks (2.13.0)
     tzinfo (0.3.37)
-    whitespace (2.0.4)
     yard (0.8.5.2)
 
 PLATFORMS
@@ -48,9 +46,7 @@ PLATFORMS
 
 DEPENDENCIES
   jeweler (>= 1.8.3)
-  magic_encoding (>= 0.0.2)
   mongoid (>= 3.0.4)
   redcarpet (>= 2.1.0)
   rspec (>= 2.13.0)
-  whitespace (>= 2.0.4)
   yard (>= 0.8.2.1)
