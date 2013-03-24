@@ -1,7 +1,8 @@
 # MongoidUserstamp [![Build Status](https://secure.travis-ci.org/tbpro/mongoid_userstamp.png)](https://travis-ci.org/tbpro/mongoid_userstamp) [![Code Climate](https://codeclimate.com/github/tbpro/mongoid_userstamp.png)](https://codeclimate.com/github/tbpro/mongoid_userstamp)
 
 MongoidUserstamp adds stamp columns for created by and updated by
-informations within rails applications.
+informations within rails applications. Mongoid requires a ruby 
+version above 1.8, so i've written the gem on the new 1.9 hash syntax.
 
 ## Install
 

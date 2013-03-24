@@ -4,7 +4,7 @@ require 'spec_helper'
 describe 'Mongoid::Userstamp' do
   subject {
     Book.new(
-      :name => 'Crafting Rails Applications'
+      name: 'Crafting Rails Applications'
     )
   }
 
@@ -26,7 +26,9 @@ describe 'Mongoid::Userstamp' do
 
   context 'when created by a user' do
     let(:user_1) {
-      User.create!(:name => 'Charles Dikkens')
+      User.create!(
+        name: 'Charles Dikkens'
+      )
     }
 
     before {
@@ -41,7 +43,9 @@ describe 'Mongoid::Userstamp' do
 
     context 'when updated by a user' do
       let(:user_2) {
-        User.create!(:name => 'Edmund Wells')
+        User.create!(
+          name: 'Edmund Wells'
+        )
       }
 
       before {
