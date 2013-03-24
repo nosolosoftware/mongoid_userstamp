@@ -5,8 +5,6 @@ module Mongoid
       extend ActiveSupport::Concern
 
       included do
-        include Mongoid::Timestamps
-
         def current?
           !Thread.current[:user].nil? && self.id == Thread.current[:user].id
         end

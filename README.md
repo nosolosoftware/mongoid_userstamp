@@ -1,4 +1,4 @@
-# MongoidUserstamp [![Build Status](https://secure.travis-ci.org/tbpro/mongoid_userstamp.png)](https://secure.travis-ci.org/#!/tbpro/mongoid_userstamp) [![Code Climate](https://codeclimate.com/github/tbpro/mongoid_userstamp.png)](https://codeclimate.com/github/tbpro/mongoid_userstamp)
+# MongoidUserstamp [![Build Status](https://secure.travis-ci.org/tbpro/mongoid_userstamp.png)](https://travis-ci.org/tbpro/mongoid_userstamp) [![Code Climate](https://codeclimate.com/github/tbpro/mongoid_userstamp.png)](https://codeclimate.com/github/tbpro/mongoid_userstamp)
 
 MongoidUserstamp adds stamp columns for created by and updated by
 informations within rails applications.
