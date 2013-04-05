@@ -42,8 +42,12 @@ module Mongoid
     end
 
     class << self
+      def configure(&block)
+        @@configuration = Mongoid::Userstamp::Config.new(&block)
+      end
+
       def configuration
-        @configuration ||= Mongoid::Userstamp::Config.new
+        @@configuration ||= Mongoid::Userstamp::Config.new
       end
     end
   end
