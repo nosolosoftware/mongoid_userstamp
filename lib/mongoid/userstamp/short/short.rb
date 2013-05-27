@@ -6,7 +6,7 @@ module Mongoid
         module Short
             extend ActiveSupport::Concern
             included do
-                    puts '********SHORTENING******'
+
                     include  Mongoid::Userstamp
                     _column_created_by = "#{Mongoid::Userstamp.configuration.created_column.to_s}".to_sym
                     _column_updated_by = "#{Mongoid::Userstamp.configuration.updated_column.to_s}".to_sym
