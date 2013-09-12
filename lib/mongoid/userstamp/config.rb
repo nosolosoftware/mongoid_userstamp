@@ -3,12 +3,14 @@ module Mongoid
   module Userstamp
     class Config
       attr_accessor :user_reader
-      attr_accessor :user_model
+      attr_writer   :user_model
 
       attr_accessor :created_column
+      attr_accessor :created_column_opts
       attr_accessor :created_accessor
 
       attr_accessor :updated_column
+      attr_accessor :updated_column_opts
       attr_accessor :updated_accessor
 
       def initialize(&block)
@@ -19,7 +21,7 @@ module Mongoid
         @created_accessor = :creator
 
         @updated_column = :updated_by
-        @updated_accessor = :updator
+        @updated_accessor = :updater
 
         instance_eval(&block) if block_given?
       end

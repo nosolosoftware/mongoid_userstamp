@@ -6,7 +6,7 @@ module Mongoid
 
       included do
         def current?
-          !Thread.current[:user].nil? && self.id == Thread.current[:user].id
+          !Thread.current[:user].nil? && self._id == Thread.current[:user]._id
         end
       end
 
