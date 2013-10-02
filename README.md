@@ -14,7 +14,10 @@ version above 1.8, so i've written the gem on the new 1.9 hash syntax.
 
  ```ruby
  # Default config
- Mongoid::Userstamp.configure do |c|
+ Mongoid::Userstamp.config do |c|
+
+   # Default config values
+
    c.user_reader = :current_user
    c.user_model = :user
 
@@ -22,7 +25,10 @@ version above 1.8, so i've written the gem on the new 1.9 hash syntax.
    c.created_accessor = :creator
 
    c.updated_column = :updated_by
-   c.updated_accessor = :updator
+   c.updated_accessor = :updater
+
+   # Mongoid field aliases can also be set via c.created_alias and c.updated_alias
+   # (useful when working with minified field names)
  end
 
  # Example model
@@ -35,20 +41,28 @@ version above 1.8, so i've written the gem on the new 1.9 hash syntax.
  p = Person.create
 
  # Updater ObjectID or nil
- p.created_by
- # => BSON::ObjectId('4f7c719f476da850ba000039')
-
- # Updater instance or nil
- p.creator
- # => <User _id: 4f7c719f476da850ba000039>
-
- # Creater ObjectID or nil
  p.updated_by
  # => BSON::ObjectId('4f7c719f476da850ba000039')
 
- # Creater instance or nil
- p.updator
+ # Updater instance or nil
+ p.updater
  # => <User _id: 4f7c719f476da850ba000039>
+
+ # Set updater manually (usually not required)
+ p.updater = my_user   # can be a Mongoid::Document or a BSON::ObjectID
+ # => sets updated_by to my_user's ObjectID
+
+ # Creator ObjectID or nil
+ p.created_by
+ # => BSON::ObjectId('4f7c719f476da850ba000039')
+
+ # Creator instance or nil
+ p.creator
+ # => <User _id: 4f7c719f476da850ba000039>
+
+ # Set creator manually (usually not required)
+ p.creator = my_user   # can be a Mongoid::Document or a BSON::ObjectID
+ # => sets created_by to my_user._id
  ```
 
 ## Credits

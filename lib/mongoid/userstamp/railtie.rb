@@ -4,14 +4,14 @@ module Mongoid
     class Railtie < Rails::Railtie
       ActiveSupport.on_load :action_controller do
         before_filter do |c|
-          unless Mongoid::Userstamp.configuration.user_model.respond_to? :current
-            Mongoid::Userstamp.configuration.user_model.send(
+          unless Mongoid::Userstamp.config.user_model.respond_to? :current
+            Mongoid::Userstamp.config.user_model.send(
               :include,
               Mongoid::Userstamp::User
             )
           end
 
-          Mongoid::Userstamp.configuration.user_model.current = c.send(Mongoid::Userstamp.configuration.user_reader)
+          Mongoid::Userstamp.config.user_model.current = c.send(Mongoid::Userstamp.config.user_reader)
         end
       end
     end
