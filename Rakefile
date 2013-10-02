@@ -22,12 +22,12 @@ Jeweler::Tasks.new do |gem|
   gem.version = Mongoid::Userstamp::Version::STRING
   gem.homepage = 'https://github.com/tbpro/mongoid_userstamp'
   gem.license = 'MIT'
-  gem.summary = %Q{Userstamp for created and updated columns within mongoid}
+  gem.summary = %Q{Userstamp for mongoid}
+  gem.description = %Q{Userstamp for created and updated columns within mongoid}
   gem.email = 'tboerger@tbpro.de'
   gem.authors = ['Thomas Boerger', 'Johnny Shields']
 end
 
-Jeweler::RubygemsDotOrgTasks.new
 YARD::Rake::YardocTask.new
 
 require 'rspec/core'

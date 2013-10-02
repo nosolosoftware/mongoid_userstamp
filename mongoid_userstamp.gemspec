@@ -11,6 +11,7 @@ Gem::Specification.new do |s|
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Thomas Boerger", "Johnny Shields"]
   s.date = "2013-10-02"
+  s.description = "Userstamp for created and updated columns within mongoid"
   s.email = "tboerger@tbpro.de"
   s.extra_rdoc_files = [
     "LICENSE.md",
@@ -42,7 +43,7 @@ Gem::Specification.new do |s|
   s.licenses = ["MIT"]
   s.require_paths = ["lib"]
   s.rubygems_version = "2.1.5"
-  s.summary = "Userstamp for created and updated columns within mongoid"
+  s.summary = "Userstamp for mongoid"
 
   if s.respond_to? :specification_version then
     s.specification_version = 4
