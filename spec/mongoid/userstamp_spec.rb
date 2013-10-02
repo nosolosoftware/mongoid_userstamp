@@ -13,10 +13,12 @@ describe Mongoid::Userstamp do
 
   describe '#current_user' do
     subject{ Mongoid::Userstamp.current_user }
+
     context 'when current user is not set' do
       before { User.current = nil }
       it { should be_nil }
     end
+
     context 'when current user is set' do
       before{ User.current = user_1 }
       it { should eq user_1 }
@@ -28,6 +30,7 @@ describe Mongoid::Userstamp do
       User.current = nil
       subject.save!
     end
+
     it { subject.created_by.should be_nil }
     it { subject.creator.should be_nil }
     it { subject.updated_by.should be_nil }
@@ -36,11 +39,13 @@ describe Mongoid::Userstamp do
 
   context 'when creator is manually set' do
     before{ User.current = user_1 }
+
     context 'set by id' do
       before do
         subject.created_by = user_2._id
         subject.save!
       end
+
       it 'should not be overridden when saved' do
         subject.created_by.should eq user_2.id
         subject.creator.should eq user_2
@@ -53,6 +58,7 @@ describe Mongoid::Userstamp do
         subject.creator = user_2
         subject.save!
       end
+      
       it 'should not be overridden when saved' do
         subject.created_by.should eq user_2.id
         subject.creator.should eq user_2

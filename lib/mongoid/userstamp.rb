@@ -1,12 +1,8 @@
 # -*- encoding : utf-8 -*-
+
 module Mongoid
   module Userstamp
     extend ActiveSupport::Concern
-
-    autoload :Version, 'mongoid/userstamp/version'
-    autoload :Railtie, 'mongoid/userstamp/railtie'
-    autoload :Config, 'mongoid/userstamp/config'
-    autoload :User, 'mongoid/userstamp/user'
 
     included do
       field Userstamp.config.updated_column, Userstamp.field_opts(Userstamp.config.updated_column_opts)
@@ -52,7 +48,9 @@ module Mongoid
           @@config ||= Userstamp::Config.new
         end
       end
-      alias :configure :config # DEPRECATED
+
+      # @deprecated Use {#config} instead
+      alias :configure :config
 
       def field_opts(opts)
         {type: ::Moped::BSON::ObjectId}.reverse_merge(opts || {})

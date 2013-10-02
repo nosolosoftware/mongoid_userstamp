@@ -27,8 +27,10 @@ version above 1.8, so i've written the gem on the new 1.9 hash syntax.
    c.updated_column = :updated_by
    c.updated_accessor = :updater
 
-   # Mongoid field aliases can also be set via c.created_alias and c.updated_alias
-   # (useful when working with minified field names)
+   # Optional config values
+
+   # c.created_alias = :c
+   # c.updated_alias = :u
  end
 
  # Example model
@@ -49,7 +51,7 @@ version above 1.8, so i've written the gem on the new 1.9 hash syntax.
  # => <User _id: 4f7c719f476da850ba000039>
 
  # Set updater manually (usually not required)
- p.updater = my_user   # can be a Mongoid::Document or a BSON::ObjectID
+ p.updater = my_user # can be a Mongoid::Document or a BSON::ObjectID
  # => sets updated_by to my_user's ObjectID
 
  # Creator ObjectID or nil
@@ -61,7 +63,7 @@ version above 1.8, so i've written the gem on the new 1.9 hash syntax.
  # => <User _id: 4f7c719f476da850ba000039>
 
  # Set creator manually (usually not required)
- p.creator = my_user   # can be a Mongoid::Document or a BSON::ObjectID
+ p.creator = my_user # can be a Mongoid::Document or a BSON::ObjectID
  # => sets created_by to my_user._id
  ```
 

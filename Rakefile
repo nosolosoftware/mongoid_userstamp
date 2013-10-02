@@ -24,7 +24,7 @@ Jeweler::Tasks.new do |gem|
   gem.license = 'MIT'
   gem.summary = %Q{Userstamp for created and updated columns within mongoid}
   gem.email = 'tboerger@tbpro.de'
-  gem.authors = ['Thomas Boerger']
+  gem.authors = ['Thomas Boerger', 'Johnny Shields']
 end
 
 Jeweler::RubygemsDotOrgTasks.new

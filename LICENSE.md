@@ -1,4 +1,4 @@
-Copyright (c) 2012 Thomas Boerger Programmierung <http://www.tbpro.de>
+Copyright (c) 2013 Thomas Boerger Programmierung <http://www.tbpro.de>
 
 Permission is hereby granted, free of charge, to any person obtaining
 a copy of this software and associated documentation files (the
