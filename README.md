@@ -82,8 +82,8 @@ Please use Ruby 1.9.3 hash syntax, as Mongoid 3 requires Ruby >= 1.9.3
 
 ## Authors
 
-* (Thomas Boerger)[http://www.tbpro.de]
-* (John Shields)[https://github.com/johnnyshields]
+* [Thomas Boerger](http://www.tbpro.de)
+* [John Shields](https://github.com/johnnyshields)
 
 ## Copyright
 
