@@ -49,8 +49,11 @@ module Mongoid
         end
       end
 
-      # @deprecated Use {#config} instead
-      alias :configure :config
+      # DEPRECATED
+      def configure(&block)
+        warn 'Mongoid::Userstamp.configure is deprecated. Please use Mongoid::Userstamp.config instead'
+        config(block)
+      end
 
       def field_opts(opts)
         {type: ::Moped::BSON::ObjectId}.reverse_merge(opts || {})

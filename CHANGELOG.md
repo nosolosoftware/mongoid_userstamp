@@ -2,6 +2,10 @@
 
 ## 0.3.1 - Unreleased
 
+* Improvement
+  * Remove autoload and replace with require in gem root lib file
+  * Add log warning for `#configure` deprecation
+
 * Admin
   * Remove Jeweler dependency, replace with gem-release gem
   * Add Gemfile.lock to .gitignore (best practice for gems)
