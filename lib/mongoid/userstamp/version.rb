@@ -1,13 +1,6 @@
 # -*- encoding : utf-8 -*-
 module Mongoid
   module Userstamp
-    module Version
-      MAJOR = 0
-      MINOR = 3
-      PATCH = 0
-      BUILD = nil
-
-      STRING = [MAJOR, MINOR, PATCH, BUILD].compact.join('.')
-    end
+    VERSION = '0.2.1'
   end
 end

@@ -1,32 +1,14 @@
-require 'rubygems'
-
 begin
   require 'bundler'
   Bundler.setup(:default, :development)
 rescue Bundler::BundlerError => e
   $stderr.puts e.message
   $stderr.puts 'Run `bundle install` to install missing gems'
-  
   exit e.status_code
 end
 
-require 'rake'
-require 'jeweler'
+require 'bundler/gem_tasks'
 require 'yard'
-
-$:.push File.expand_path('../lib', __FILE__)
-require 'mongoid/userstamp/version'
-
-Jeweler::Tasks.new do |gem|
-  gem.name = 'mongoid_userstamp'
-  gem.version = Mongoid::Userstamp::Version::STRING
-  gem.homepage = 'https://github.com/tbpro/mongoid_userstamp'
-  gem.license = 'MIT'
-  gem.summary = %Q{Userstamp for mongoid}
-  gem.description = %Q{Userstamp for created and updated columns within mongoid}
-  gem.email = 'tboerger@tbpro.de'
-  gem.authors = ['Thomas Boerger', 'Johnny Shields']
-end
 
 YARD::Rake::YardocTask.new
 

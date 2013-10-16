@@ -7,4 +7,6 @@
 /pkg
 /doc
 
+/.rbenv-version
 /*.gem
+/Gemfile.lock

@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.3.1 - Unreleased
+
+* Admin
+  * Remove Jeweler dependency, replace with gem-release gem
+  * Add Gemfile.lock to .gitignore (best practice for gems)
+  * Simplify version file
+
 ## [0.3.0](https://github.com/tbpro/mongoid_userstamp/releases/tag/v0.3.0) - 2013-10-02
 
 * Improvement
