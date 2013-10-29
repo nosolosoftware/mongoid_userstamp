@@ -11,7 +11,10 @@ module Mongoid
             )
           end
 
-          Mongoid::Userstamp.config.user_model.current = c.send(Mongoid::Userstamp.config.user_reader)
+          begin
+            Mongoid::Userstamp.config.user_model.current = c.send(Mongoid::Userstamp.config.user_reader)
+          rescue
+          end
         end
       end
     end
