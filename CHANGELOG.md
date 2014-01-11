@@ -1,6 +1,6 @@
 # Changelog
 
-## 0.3.1 - Unreleased
+## [0.3.1](https://github.com/tbpro/mongoid_userstamp/releases/tag/v0.3.1) - 2014-01-11
 
 * Improvement
   * Remove autoload and replace with require in gem root lib file
