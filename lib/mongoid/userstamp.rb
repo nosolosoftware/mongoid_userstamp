@@ -17,6 +17,8 @@ module Mongoid
       end
 
       def set_userstamp_key(config)
+        available = Mongoid::Userstamp.configs.has_key?(config)
+        raise ConfigurationNotFoundError.new(config) unless available
         class_variable_set('@@userstamp_key', config)
       end
 
@@ -31,7 +33,7 @@ module Mongoid
       def config(name = :default, &block)
         @configs ||= { default: Userstamp::Config.new }
         if block_given?
-           @configs[name] = Userstamp::Config.new(&block)
+          @configs[name] = Userstamp::Config.new(&block)
         else
           @configs[name] = Userstamp::Config.new
         end
