@@ -114,6 +114,10 @@ Now to use this configuration instead of the default in any model use 'mongoid_u
   # => <Admin _id: 4f7c719f476da850ba000039>
 ```
 
+## Demo App
+
+A demo application demonstrating how to define and use multiple configurations in Mongoid::Userstamp can be found [here](https://github.com/Bharat311/mongoid_userstamp_demo).
+
 ## Contributing
 
 Fork -> Patch -> Spec -> Push -> Pull Request
