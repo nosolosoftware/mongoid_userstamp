@@ -5,18 +5,22 @@ module Mongoid
       extend ActiveSupport::Concern
 
       included do
+        cattr_accessor :user_key do
+          "mongoid_userstamp/#{self.to_s.underscore}".to_sym
+        end
+
         def current?
-          !Thread.current[:user].nil? && self._id == Thread.current[:user]._id
+          !Thread.current[user_key].nil? && self._id == Thread.current[user_key]._id
         end
       end
 
       module ClassMethods
         def current
-          Thread.current[:user]
+          Thread.current[user_key]
         end
 
         def current=(value)
-          Thread.current[:user] = value
+          Thread.current[user_key] = value
         end
 
         def do_as(user, &block)
