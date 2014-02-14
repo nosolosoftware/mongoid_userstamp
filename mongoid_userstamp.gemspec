@@ -4,7 +4,7 @@ require 'mongoid/userstamp/version'
 Gem::Specification.new do |s|
   s.name        = 'mongoid_userstamp'
   s.version     = Mongoid::Userstamp::VERSION
-  s.authors     = ['Thomas Boerger', 'Johnny Shields']
+  s.authors     = ['Thomas Boerger', 'Johnny Shields', 'Bharat Gupta']
   s.homepage    = 'https://github.com/tbpro/mongoid_userstamp'
   s.license     = 'MIT'
   s.summary     = 'Userstamp for Mongoid'
