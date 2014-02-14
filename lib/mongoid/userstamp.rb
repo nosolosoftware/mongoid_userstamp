@@ -6,7 +6,7 @@ module Mongoid
 
     included do
       cattr_reader :userstamp_key, instance_reader: false
-      @@userstamp_key = :default
+      class_variable_set('@@userstamp_key', :default)
       Mongoid::Userstamp.add(self)
     end
 
