@@ -1,9 +1,7 @@
 # -*- encoding : utf-8 -*-
-class Book
+class Admin
   include Mongoid::Document
-  include Mongoid::Userstamp
-
-  mongoid_userstamp
+  include Mongoid::Userstamp::User
 
   field :name
 end

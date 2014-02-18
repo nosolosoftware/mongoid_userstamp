@@ -73,6 +73,50 @@ MongoidUserstamp is tested on the following versions:
   p.creator = my_user # can be a Mongoid::Document or a BSON::ObjectID
   # => sets created_by to my_user._id
 ```
+## Multiple Configurations
+
+Mongoid::Userstamp provides ability to create multiple configurations. Simply create a new configuration as:
+
+```ruby
+  # Admin config
+  Mongoid::Userstamp.config :admin do |c|
+
+    # Admin specific config values
+    # Defaults are considered for values not specified.
+
+    c.user_reader = :current_admin
+    c.user_model = :admin
+
+  end
+```
+
+Now to use this configuration instead of the default in any model use 'mongoid_userstamp' class method to specify configuration.
+
+```
+  # Example model
+  class Book
+    include Mongoid::Document
+    include Mongoid::Userstamp
+
+    # specifying the configuration to be used. If none then :default configuration is used.
+    mongoid_userstamp :admin
+  end
+
+  # Create instance
+  b = Book.create
+
+  b.updater = <Admin _id: 4f7c719f476da850ba000039>
+
+  b.updated_by
+  # => BSON::ObjectId('4f7c719f476da850ba000039')
+
+  b.updater
+  # => <Admin _id: 4f7c719f476da850ba000039>
+```
+
+## Demo App
+
+A demo application demonstrating how to define and use multiple configurations in Mongoid::Userstamp can be found [here](https://github.com/Bharat311/mongoid_userstamp_demo).
 
 ## Contributing
 
@@ -84,6 +128,7 @@ Please use Ruby 1.9.3 hash syntax, as Mongoid 3 requires Ruby >= 1.9.3
 
 * [Thomas Boerger](http://www.tbpro.de)
 * [John Shields](https://github.com/johnnyshields)
+* [Bharat Gupta](https://github.com/Bharat311)
 
 ## Copyright
 

@@ -5,47 +5,37 @@ module Mongoid
     extend ActiveSupport::Concern
 
     included do
-      field Userstamp.config.updated_column, Userstamp.field_opts(Userstamp.config.updated_column_opts)
-      field Userstamp.config.created_column, Userstamp.field_opts(Userstamp.config.created_column_opts)
+      cattr_reader :userstamp_key, instance_reader: false
+      class_variable_set('@@userstamp_key', :default)
+      Mongoid::Userstamp.add(self)
+    end
 
-      before_save :set_updater
-      before_create :set_creator
-
-      define_method Userstamp.config.updated_accessor do
-        Userstamp.find_user self.send(Userstamp.config.updated_column)
+    module ClassMethods
+      def mongoid_userstamp(config = :default)
+        set_userstamp_key(config.to_sym)
+        send(:include, Mongoid::Userstamp::Userstampable)
       end
 
-      define_method Userstamp.config.created_accessor do
-        Userstamp.find_user self.send(Userstamp.config.created_column)
+      def set_userstamp_key(config)
+        available = Mongoid::Userstamp.configs.has_key?(config)
+        raise ConfigurationNotFoundError.new(config) unless available
+        class_variable_set('@@userstamp_key', config)
       end
 
-      define_method "#{Userstamp.config.updated_accessor}=" do |user|
-        self.send("#{Userstamp.config.updated_column}=", Userstamp.extract_bson_id(user))
-      end
-
-      define_method "#{Userstamp.config.created_accessor}=" do |user|
-        self.send("#{Userstamp.config.created_column}=", Userstamp.extract_bson_id(user))
-      end
-
-      protected
-
-      def set_updater
-        return if !Userstamp.has_current_user?
-        self.send("#{Userstamp.config.updated_accessor}=", Userstamp.current_user)
-      end
-
-      def set_creator
-        return if !Userstamp.has_current_user? || self.send(Userstamp.config.created_column)
-        self.send("#{Userstamp.config.created_accessor}=", Userstamp.current_user)
+      def userstamp_config
+        Mongoid::Userstamp.configs[userstamp_key]
       end
     end
 
     class << self
-      def config(&block)
+      attr_reader :configs, :timestamped_models
+
+      def config(name = :default, &block)
+        @configs ||= { default: Userstamp::Config.new }
         if block_given?
-          @@config = Userstamp::Config.new(&block)
+          @configs[name] = Userstamp::Config.new(&block)
         else
-          @@config ||= Userstamp::Config.new
+          @configs[name] = Userstamp::Config.new
         end
       end
 
@@ -59,14 +49,6 @@ module Mongoid
         {type: ::Moped::BSON::ObjectId}.reverse_merge(opts || {})
       end
 
-      def has_current_user?
-        config.user_model.respond_to?(:current)
-      end
-
-      def current_user
-        config.user_model.try(:current)
-      end
-
       def extract_bson_id(value)
         if value.respond_to?(:_id)
           value.try(:_id)
@@ -77,13 +59,19 @@ module Mongoid
         end
       end
 
-      def find_user(user_id)
+      def find_user(user_model, user_id)
         begin
-          user_id ? Userstamp.config.user_model.unscoped.find(user_id) : nil
+          user_id ? user_model.unscoped.find(user_id) : nil
         rescue Mongoid::Errors::DocumentNotFound => e
           nil
         end
       end
+
+      def add(model)
+        @timestamped_models ||= []
+        @timestamped_models << model
+      end
+
     end
   end
 end
