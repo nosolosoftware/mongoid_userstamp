@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.4.0](https://github.com/tbpro/mongoid_userstamp/releases/tag/v0.4.0) - 2014-02-20
+
+* BREAKING: Change userstamp keys to use Mongoid relations. Requires database migration.
+* Add support for multiple user classes via polymorphic userstamps.
+* Refactor to extract `Controller` and `Configurable` modules
+
 ## [0.3.2](https://github.com/tbpro/mongoid_userstamp/releases/tag/v0.3.2) - 2014-01-12
 
 * Fix bad gem release

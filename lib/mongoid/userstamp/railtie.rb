@@ -1,36 +1,26 @@
 # -*- encoding : utf-8 -*-
 module Mongoid
-  module Userstamp
-    class Railtie < Rails::Railtie
+module Userstamp
 
-      ActiveSupport.on_load :action_controller do
-        before_filter do |c|
-          #### The below code is added for backwards compatibility so that the below works as well. In this case :default config is used.
-          #
-          # class Article
-          #   include Mongoid::Userstamp
-          # end
-          #
-          Mongoid::Userstamp.timestamped_models.each do |model|
-            unless model.included_modules.include?(Mongoid::Userstamp::Userstampable)
-              model.send(:include, Mongoid::Userstamp::Userstampable)
-            end
-          end if Mongoid::Userstamp.timestamped_models
+  class Railtie < Rails::Railtie
 
-          Mongoid::Userstamp.configs.each_pair do |key, config|
-            begin
-              unless config.user_model.respond_to?(:current)
-                config.user_model.send(:include, Mongoid::Userstamp::User)
-              end
+    ActiveSupport.on_load :action_controller do
 
-              config.user_model.current = c.send(config.user_reader)
-            rescue
-            end
+      before_filter do |c|
+
+        Mongoid::Userstamp.config.user_configs.each do |user_config|
+          unless user_config.user_class.respond_to? :current
+            user_config.user_class.send(:include, Mongoid::Userstamp::User)
           end
 
+          # TODO FIX THIS
+          begin
+            user_config.user_class.user_model.current = c.send(user_config.reader)
+          rescue
+          end
         end
       end
-
     end
   end
+end
 end

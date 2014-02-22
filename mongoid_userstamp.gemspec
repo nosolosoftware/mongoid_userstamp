@@ -23,4 +23,5 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'rspec', '>= 2.13.0'
   s.add_development_dependency 'yard'
   s.add_development_dependency 'gem-release'
+  s.add_development_dependency 'request_store'
 end

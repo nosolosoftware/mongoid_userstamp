@@ -1,60 +1,49 @@
 # -*- encoding : utf-8 -*-
 
 module Mongoid
-  module Userstamp
-    module Userstampable
-      extend ActiveSupport::Concern
+module Userstamp
 
-      included do
+  module Userstampable
 
-        field userstamp_config.updated_column, Mongoid::Userstamp.field_opts(userstamp_config.updated_column_opts)
-        field userstamp_config.created_column, Mongoid::Userstamp.field_opts(userstamp_config.created_column_opts)
+    extend ActiveSupport::Concern
 
-        before_save :set_updater
-        before_create :set_creator
+    included do
 
-        def userstamp_config
-          self.class.userstamp_config
-        end
+      belongs_to Mongoid::Userstamp.config.created_by_name,
+                 Mongoid::Userstamp::Userstampable.relation_opts(Mongoid::Userstamp.config.updated_column_opts)
 
-        define_method userstamp_config.updated_accessor do
-          Mongoid::Userstamp.find_user userstamp_config.user_model, self.send(userstamp_config.updated_column)
-        end
+      belongs_to Mongoid::Userstamp.config.updated_by_name,
+                 Mongoid::Userstamp::Userstampable.relation_opts(Mongoid::Userstamp.config.updated_column_opts)
 
-        define_method userstamp_config.created_accessor do
-          Mongoid::Userstamp.find_user userstamp_config.user_model, self.send(userstamp_config.created_column)
-        end
+      before_create :set_created_by
 
-        define_method "#{userstamp_config.updated_accessor}=" do |user|
-          self.send("#{userstamp_config.updated_column}=", Mongoid::Userstamp.extract_bson_id(user))
-        end
+      before_save :set_updated_by
 
-        define_method "#{userstamp_config.created_accessor}=" do |user|
-          self.send("#{userstamp_config.created_column}=", Mongoid::Userstamp.extract_bson_id(user))
-        end
+      protected
 
-        protected
-
-        def set_updater
-          return if !self.class.has_current_user?
-          self.send("#{userstamp_config.updated_accessor}=", self.class.current_user)
-        end
-
-        def set_creator
-          return if !self.class.has_current_user? || self.send(userstamp_config.created_column)
-          self.send("#{userstamp_config.created_accessor}=", self.class.current_user)
-        end
+      def set_created_by
+        return if !Mongoid::Userstamp.has_current_user? || self.send(Mongoid::Userstamp.config.created_by_name)
+        self.send("#{Mongoid::Userstamp.config.created_by_name}=", Mongoid::Userstamp.current_user)
       end
 
-      module ClassMethods
-        def has_current_user?
-          userstamp_config.user_model.respond_to?(:current)
-        end
+      def set_updated_by
+        return if !Mongoid::Userstamp.has_current_user?
+        self.send("#{Mongoid::Userstamp.config.updated_by_name}=", Mongoid::Userstamp.current_user)
+      end
+    end
 
-        def current_user
-          userstamp_config.user_model.try(:current)
+    class << self
+
+      def relation_opts(opts)
+        opts ||= {}
+        if Mongoid::Userstamp.config.polymorphic
+          opts.merge!({polymorphic: Mongoid::Userstamp.config.polymorphic})
+        else
+          opts.merge!({class_name: Mongoid::Userstamp.config.user_configs.first.model})
         end
+        opts
       end
     end
   end
+end
 end
