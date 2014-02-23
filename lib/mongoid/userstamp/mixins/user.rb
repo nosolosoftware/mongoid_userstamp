@@ -1,4 +1,5 @@
 # -*- encoding : utf-8 -*-
+
 module Mongoid
 module Userstamp
 
@@ -7,6 +8,8 @@ module Userstamp
     extend ActiveSupport::Concern
 
     included do
+
+      Mongoid::Userstamp.add_user_class(self)
 
       def current?
         self._id == Mongoid::Userstamp.current_user(self.class).try(:_id)
@@ -20,7 +23,7 @@ module Userstamp
       end
 
       def current=(value)
-        Mongoid::Userstamp.current_user = value
+        Mongoid::Userstamp.set_current_user(value, self)
       end
 
       def do_as(user, &block)
@@ -32,6 +35,13 @@ module Userstamp
           self.current = old
         end
         response
+      end
+
+      module ClassMethods
+
+        def mongoid_userstamp_user(opts = {})
+          @mongoid_userstamp_user ||= Mongoid::Userstamp::UserConfig.new(opts = {})
+        end
       end
     end
   end

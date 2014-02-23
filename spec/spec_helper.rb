@@ -1,5 +1,6 @@
 # -*- encoding : utf-8 -*-
 require 'rubygems'
+require 'ostruct'
 
 $:.push File.expand_path('../../lib', __FILE__)
 
@@ -7,14 +8,12 @@ require 'active_support/all'
 require 'mongoid'
 require 'mongoid_userstamp'
 
-%w(config admin user book post).each do |file_name|
+%w(admin user book post).each do |file_name|
   require "support/#{file_name}"
 end
 
 Mongoid.configure do |config|
-  config.connect_to(
-    'mongoid_userstamp_test'
-  )
+  config.connect_to 'mongoid_userstamp_test'
 end
 
 RSpec.configure do |config|

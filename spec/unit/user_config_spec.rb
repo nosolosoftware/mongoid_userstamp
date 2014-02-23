@@ -1,45 +1,23 @@
 # -*- encoding : utf-8 -*-
 require 'spec_helper'
 
-describe Mongoid::Userstamp::Config::UserConfig do
+describe Mongoid::Userstamp::UserConfig do
 
-  subject { Mongoid::Userstamp::Config::UserConfig.new }
-
-  describe '#initialize' do
-
-    context 'without block' do
-      its(:model) { should eq :user }
-      its(:reader){ should eq :current_user }
-    end
-
-    context 'with block' do
-      subject do
-        Mongoid::Userstamp::Config::UserConfig.new do |u|
-          u.model  = :custom_user
-          u.reader = :custom_current_user
-        end
-      end
-      its(:model) { should eq :custom_user }
-      its(:reader){ should eq :custom_current_user }
-    end
-  end
+  subject { Mongoid::Userstamp::UserConfig.new }
+  before  { Mongoid::Userstamp.stub('config').and_return(OpenStruct.new(user_reader: :foo)) }
 
   describe '#initialize' do
 
-    context 'without block' do
-      its(:model) { should eq :user }
-      its(:reader){ should eq :current_user }
+    context 'with opts hash' do
+      subject { Mongoid::Userstamp::UserConfig.new({reader: :bar}) }
+
+      it { should be_a Mongoid::Userstamp::UserConfig }
+      its(:reader){ should eq :bar }
     end
 
-    context 'with block' do
-      subject do
-        Mongoid::Userstamp::Config::UserConfig.new do |u|
-          u.model  = :custom_user
-          u.reader = :custom_current_user
-        end
-      end
-      its(:model) { should eq :custom_user }
-      its(:reader){ should eq :custom_current_user }
+    context 'without opts hash' do
+      it { should be_a Mongoid::Userstamp::UserConfig }
+      its(:reader){ should eq :foo }
     end
   end
 end

@@ -1,23 +1,17 @@
 # -*- encoding : utf-8 -*-
+
 module Mongoid
 module Userstamp
-module Config
 
-  module UserConfig
+  class UserConfig
 
-    attr_writer   :model
-    attr_accessor :reader
-
-    def initialize(&block)
-      @model  = :user
-      @reader = :current_user
-      instance_eval(&block) if block_given?
+    def initialize(opts = {})
+      @reader = opts.delete(:reader)
     end
 
-    def model
-      @model.to_s.classify.constantize
+    def reader
+      @reader || Mongoid::Userstamp.config.user_reader
     end
   end
-end
 end
 end

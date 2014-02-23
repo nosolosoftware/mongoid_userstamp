@@ -29,19 +29,30 @@ Mongoid::Userstamp does the following:
   # Default config (optional unless you want to customize the values)
   Mongoid::Userstamp.config do |c|
     c.user_reader = :current_user
-    c.user_model = :user
-    c.created_by_name = :created_by
-    c.updated_by_name = :updated_by
-    c.polymorphic = false
-    c.use_request_store = false
+    c.created_name = :created_by
+    c.updated_name = :updated_by
   end
 
-  # Example model
+  # Example model class
   class Product
     include Mongoid::Document
     include Mongoid::Userstamp
+
+    # optional class-level config override
+    # mongoid_userstamp user_model: 'MyUser',
+    #                   created_name: :creator,
+    #                   updated_name: :updater,
   end
  
+  # Example user class (you can skip this step you have a single user class is named "User")
+  class MyUser
+    include Mongoid::Document
+    include Mongoid::Userstamp::User
+
+    # optional class-level config override
+    # mongoid_userstamp_user reader: :current_my_user
+  end
+
   # Create instance
   p = Product.create
 
@@ -54,8 +65,8 @@ Mongoid::Userstamp does the following:
   # => <User _id: 4f7c719f476da850ba000039>
 
   # Set creator/updater manually (usually not required)
-  p.created_by = User.where(name: 'Will Smith')
-  p.updated_by = User.where(name: 'DJ Jazzy Jeff')
+  p.created_by = MyUser.where(name: 'Will Smith')
+  p.updated_by = MyUser.where(name: 'DJ Jazzy Jeff')
 ```
 
 
@@ -66,69 +77,66 @@ your Controllers. Mongoid::Userstamp will automatically use this to set its user
 on each request. (You can set an alternative method name via the `user_reader` config.)
 
 *Gotcha:* If you have special controller actions which change/switch the current user to a new user, you will
-need to set `Mongoid::Userstamp.current_user = new_user` after the switch occurs.
+need to set `User.current = new_user` after the switch occurs.
 
 
 ## Thread Safety
 
-By default, Mongoid::Userstamp stores all-related user variables in `Thread.current`. This may cause
-erratic behavior on threaded web servers like Thin or Puma. Fortunately you can use the
-[RequestStore](https://github.com/steveklabnik/request_store) gem as workaround by installing the gem and
-setting `use_request_store = true` in your config.
+By default, Mongoid::Userstamp stores all-related user variables in `Thread.current`.
+If the [RequestStore](https://github.com/steveklabnik/request_store) gem is installed, Mongoid::Userstamp
+will automatically store variables in the `RequestStore.store` instead. RequestStore is recommended
+for threaded web servers like Thin or Puma.
 
 
-## Advanced Usage: Polymorphic Userstamps
+## Advanced Usage: Multiple User Classes
 
-In general, most Rails apps use a single user model. However, if you would like to use
-Mongoid::Userstamp will track a separate current_user for each class.
+Most Rails apps use a single user model. However, Mongoid::Userstamp supports using multiple user models
+at once, and will track a separate current_user for each class.
 
-Please be aware of the following limitations of this approach:
-* Enabling `use_polymorphic = true` will make every userstamped class in your application
-to be polymorphic.
-* You will have to manually add the `created_by_type` and `updated_by_type` fields
-if you were not using them previously.
-* Although multiple user classes may be logged in at once, the userstamp contains only one value by design.
-The assumption is that there is only one actual user/person who does the given create/update action.
+Please note that each model may subscribe to only one user type for its userstamps, set via the
+`:user_model` option.
 
 ```ruby
-  # Example config for polymorphism
-  Mongoid::Userstamp.config do |c|
-    c.polymorphic = true
+  class Admin
+    include Mongoid::Document
+    include Mongoid::Userstamp::User
 
-    c.user_config do |u|
-      u.model  = :merchant_user
-      u.reader = :current_merchant_user
-    end
-
-    c.user_config do |u|
-      u.model  = :customer_user
-      u.reader = :current_customer_user
-    end
+    mongoid_userstamp_user reader: :current_admin
   end
 
-  # Example model (same as non-polymorphic case)
-  class Product
+  class Customer
+    include Mongoid::Document
+    include Mongoid::Userstamp::User
+
+    mongoid_userstamp_user reader: :current_customer
+  end
+
+  class Album
     include Mongoid::Document
     include Mongoid::Userstamp
+
+    mongoid_userstamp user_model: 'Customer'
+  end
+
+  class Label
+    include Mongoid::Document
+    include Mongoid::Userstamp
+
+    mongoid_userstamp user_model: 'Admin'
   end
 
   # Set current user for each type
-  Mongoid::Userstamp.current_user = CustomerUser.where(name: 'Sir Mix-A-Lot')
-  Mongoid::Userstamp.current_user = MerchantUser.where(name: 'Biz Markie')
+  Admin.current = Admin.where(name: 'Biz Markie')
+  Customer.current = Customer.where(name: 'Sir Mix-A-Lot')
 
   # In your Controller action
-  product = Product.new('Baby Got Back Single')
-  Mongoid::Userstamp.user_class = 'customer_user'
-  product.save!
-  product.updated_by.name   #=> 'Sir Mix-A-Lot'
-  product.updated_by_type   #=> 'CustomerUser'
+  album = Album.new('Baby Got Back Single')
+  album.save!
+  album.created_by.name   #=> 'Sir Mix-A-Lot'
 
-  # Alternative block syntax
-  Mongoid::Userstamp.with_user_class('merchant_user') do
-    product.save!
-    product.updated_by.name   #=> 'Biz Markie'
-    product.updated_by_type   #=> 'MerchantUser'
-  end
+  label = Label.new('Cold Chillin Records')
+  label.save!
+  label.created_by.name   #=> 'Biz Markie'
 ```
 
 ## Contributing

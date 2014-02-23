@@ -1,8 +1,10 @@
 # -*- encoding : utf-8 -*-
+
 require 'mongoid/userstamp'
 require 'mongoid/userstamp/version'
-require 'mongoid/userstamp/config'
-require 'mongoid/userstamp/error'
-require 'mongoid/userstamp/user'
-require 'mongoid/userstamp/userstampable'
+require 'mongoid/userstamp/config/app_config'
+require 'mongoid/userstamp/config/model_config'
+require 'mongoid/userstamp/config/user_config'
+require 'mongoid/userstamp/mixins/user'
+require 'mongoid/userstamp/mixins/model'
 require 'mongoid/userstamp/railtie' if defined? Rails
