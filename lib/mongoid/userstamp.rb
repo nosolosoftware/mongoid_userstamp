@@ -24,7 +24,7 @@ module Mongoid
     class << self
 
       def config(&block)
-        @config ||= Mongoid::Userstamp::AppConfig.new(&block)
+        @config ||= Mongoid::Userstamp::GemConfig.new(&block)
       end
 
       # @deprecated
@@ -49,7 +49,7 @@ module Mongoid
       end
 
       def model_classes
-        (@model_classes || []).map{|c| c.is_a?(Class) ? c : c.to_s.constantize }
+        (@model_classes || []).map{|c| c.is_a?(Class) ? c : c.to_s.classify.constantize }
       end
 
       def add_model_class(model)
@@ -58,7 +58,7 @@ module Mongoid
       end
 
       def user_classes
-        (@user_classes || ['User']).map{|c| c.is_a?(Class) ? c : c.to_s.constantize }
+        (@user_classes || ['User']).map{|c| c.is_a?(Class) ? c : c.to_s.classify.constantize }
       end
 
       def add_user_class(user)

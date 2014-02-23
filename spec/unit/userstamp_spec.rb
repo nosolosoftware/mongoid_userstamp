@@ -14,7 +14,7 @@ describe Mongoid::Userstamp do
 
     context 'without block' do
       subject{ Mongoid::Userstamp.config }
-      it { should be_a Mongoid::Userstamp::AppConfig }
+      it { should be_a Mongoid::Userstamp::GemConfig }
       its(:created_name){ should eq :created_by }
       its(:updated_name){ should eq :updated_by }
       its(:user_reader){ should eq :current_user }
@@ -28,7 +28,7 @@ describe Mongoid::Userstamp do
           u.user_reader = :foo
         end
       end
-      it { should be_a Mongoid::Userstamp::AppConfig }
+      it { should be_a Mongoid::Userstamp::GemConfig }
       its(:created_name){ should eq :c_by }
       its(:updated_name){ should eq :u_by }
       its(:user_reader){ should eq :foo }
@@ -36,7 +36,7 @@ describe Mongoid::Userstamp do
 
     context 'deprecated method' do
       subject{ Mongoid::Userstamp.configure }
-      it { should be_a Mongoid::Userstamp::AppConfig }
+      it { should be_a Mongoid::Userstamp::GemConfig }
     end
   end
 

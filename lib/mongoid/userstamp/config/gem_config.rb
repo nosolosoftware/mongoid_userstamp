@@ -3,7 +3,7 @@
 module Mongoid
 module Userstamp
 
-  class AppConfig
+  class GemConfig
 
     attr_accessor :created_name
     attr_accessor :updated_name

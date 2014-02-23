@@ -82,8 +82,8 @@ need to set `User.current = new_user` after the switch occurs.
 
 ## Thread Safety
 
-By default, Mongoid::Userstamp stores all-related user variables in `Thread.current`.
-If the [RequestStore](https://github.com/steveklabnik/request_store) gem is installed, Mongoid::Userstamp
+Mongoid::Userstamp stores all-related user variables in `Thread.current`. If the
+[RequestStore](https://github.com/steveklabnik/request_store) gem is installed, Mongoid::Userstamp
 will automatically store variables in the `RequestStore.store` instead. RequestStore is recommended
 for threaded web servers like Thin or Puma.
 
