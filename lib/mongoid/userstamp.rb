@@ -13,7 +13,7 @@ module Mongoid
 
       def mongoid_userstamp(opts = {})
         mongoid_userstamp_config(opts)
-        self.send(:include, Mongoid::Userstamp::Model)
+        self.send(:include, Mongoid::Userstamp::Model) unless self.included_modules.include?(Mongoid::Userstamp::Model)
       end
 
       def mongoid_userstamp_config(opts = {})

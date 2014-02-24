@@ -71,6 +71,25 @@ describe Mongoid::Userstamp::User do
     end
   end
 
-  #describe '::mongoid_userstamp_user' do
-  #end
+  describe '::mongoid_userstamp_user' do
+    before{ User.instance_variable_set(:'@mongoid_userstamp_user', nil) }
+
+    context 'when options are not given' do
+      subject{ User.mongoid_userstamp_user }
+      it { should be_a Mongoid::Userstamp::UserConfig }
+      its(:reader) { should eq :current_user  }
+    end
+
+    context 'when options are given' do
+      subject{ User.mongoid_userstamp_user(reader: :foo) }
+      it { should be_a Mongoid::Userstamp::UserConfig }
+      its(:reader) { should eq :foo  }
+    end
+
+    context 'when mongoid_userstamp_user has been set' do
+      subject{ User.mongoid_userstamp_user; User.mongoid_userstamp_user(reader: :foo) }
+      it { should be_a Mongoid::Userstamp::UserConfig }
+      its(:reader) { should eq :current_user  }
+    end
+  end
 end

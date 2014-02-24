@@ -6,7 +6,7 @@ module Userstamp
   class ModelConfig
 
     def initialize(opts = {})
-      @user_model      = opts.delete(:user_model)
+      @user_model   = opts.delete(:user_model)
       @created_name = opts.delete(:created_name)
       @updated_name = opts.delete(:updated_name)
     end

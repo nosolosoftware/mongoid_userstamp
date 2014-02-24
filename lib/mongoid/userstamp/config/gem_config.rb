@@ -12,7 +12,7 @@ module Userstamp
     def initialize(&block)
       @created_name = :created_by
       @updated_name = :updated_by
-      @user_reader     = :current_user
+      @user_reader  = :current_user
 
       instance_eval(&block) if block_given?
     end
