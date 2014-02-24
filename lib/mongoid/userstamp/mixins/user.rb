@@ -37,11 +37,8 @@ module Userstamp
         response
       end
 
-      module ClassMethods
-
-        def mongoid_userstamp_user(opts = {})
-          @mongoid_userstamp_user ||= Mongoid::Userstamp::UserConfig.new(opts = {})
-        end
+      def mongoid_userstamp_user(opts = {})
+        @mongoid_userstamp_user ||= Mongoid::Userstamp::UserConfig.new(opts = {})
       end
     end
   end
