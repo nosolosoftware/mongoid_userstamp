@@ -38,7 +38,7 @@ module Userstamp
       end
 
       def mongoid_userstamp_user(opts = {})
-        @mongoid_userstamp_user ||= Mongoid::Userstamp::UserConfig.new(opts = {})
+        @mongoid_userstamp_user ||= Mongoid::Userstamp::UserConfig.new(opts)
       end
     end
   end
