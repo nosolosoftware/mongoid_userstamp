@@ -16,16 +16,16 @@ describe Mongoid::Userstamp::ModelConfig do
                                                     updated_name: :u_by) }
 
       it { should be_a Mongoid::Userstamp::ModelConfig }
-      its(:user_model){ should eq :bar }
-      its(:created_name){ should eq :c_by }
-      its(:updated_name){ should eq :u_by }
+      it { subject.user_model.should eq :bar }
+      it { subject.created_name.should eq :c_by }
+      it { subject.updated_name.should eq :u_by }
     end
 
     context 'without opts hash' do
       it { should be_a Mongoid::Userstamp::ModelConfig }
-      its(:user_model){ should eq 'User' }
-      its(:created_name){ should eq :created_by }
-      its(:updated_name){ should eq :updated_by }
+      it { subject.user_model.should eq 'User' }
+      it { subject.created_name.should eq :created_by }
+      it { subject.updated_name.should eq :updated_by }
     end
   end
 end

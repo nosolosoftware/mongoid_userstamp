@@ -15,9 +15,9 @@ describe Mongoid::Userstamp do
     context 'without block' do
       subject{ Mongoid::Userstamp.config }
       it { should be_a Mongoid::Userstamp::GemConfig }
-      its(:created_name){ should eq :created_by }
-      its(:updated_name){ should eq :updated_by }
-      its(:user_reader){ should eq :current_user }
+      it { subject.created_name.should eq :created_by }
+      it { subject.updated_name.should eq :updated_by }
+      it { subject.user_reader.should eq :current_user }
     end
 
     context 'with block' do
@@ -29,9 +29,9 @@ describe Mongoid::Userstamp do
         end
       end
       it { should be_a Mongoid::Userstamp::GemConfig }
-      its(:created_name){ should eq :c_by }
-      its(:updated_name){ should eq :u_by }
-      its(:user_reader){ should eq :foo }
+      it { subject.created_name.should eq :c_by }
+      it { subject.updated_name.should eq :u_by }
+      it { subject.user_reader.should eq :foo }
     end
 
     context 'deprecated method' do
@@ -68,28 +68,28 @@ describe Mongoid::Userstamp do
   describe '#model_classes' do
     before { Mongoid::Userstamp.instance_variable_set(:'@model_classes', nil) }
     context 'default value' do
-      its(:model_classes){ should eq [] }
+      it { subject.model_classes.should eq [] }
     end
     context 'setting values' do
       before do
         subject.add_model_class 'Book'
         subject.add_model_class 'Post'
       end
-      its(:model_classes){ should eq [Book, Post] }
+      it { subject.model_classes.should eq [Book, Post] }
     end
   end
 
   describe '#user_classes' do
     before { Mongoid::Userstamp.instance_variable_set(:'@user_classes', nil) }
     context 'default value' do
-      its(:user_classes){ should eq [User] }
+      it { subject.user_classes.should eq [User] }
     end
     context 'setting values' do
       before do
         subject.add_user_class 'Book'
         subject.add_user_class 'Post'
       end
-      its(:user_classes){ should eq [Book, Post] }
+      it { subject.user_classes.should eq [Book, Post] }
     end
   end
 
@@ -99,11 +99,11 @@ describe Mongoid::Userstamp do
         stub_const('RequestStore', Object.new)
         RequestStore.stub('store').and_return('foobar')
       end
-      its(:store){ should eq RequestStore.store }
+      it { subject.store.should eq RequestStore.store }
     end
     context 'when RequestStore is not defined' do
       before{ hide_const('RequestStore') }
-      its(:store){ should eq Thread.current }
+      it { subject.store.should eq Thread.current }
     end
   end
 

@@ -9,9 +9,9 @@ describe Mongoid::Userstamp::GemConfig do
 
     context 'without block' do
       it { should be_a Mongoid::Userstamp::GemConfig }
-      its(:created_name){ should eq :created_by }
-      its(:updated_name){ should eq :updated_by }
-      its(:user_reader){ should eq :current_user }
+      it { subject.created_name.should eq :created_by }
+      it { subject.updated_name.should eq :updated_by }
+      it { subject.user_reader.should eq :current_user }
     end
 
     context 'with block' do
@@ -24,9 +24,9 @@ describe Mongoid::Userstamp::GemConfig do
       end
 
       it { should be_a Mongoid::Userstamp::GemConfig }
-      its(:created_name){ should eq :c_by }
-      its(:updated_name){ should eq :u_by }
-      its(:user_reader){ should eq :foo }
+      it { subject.created_name.should eq :c_by }
+      it { subject.updated_name.should eq :u_by }
+      it { subject.user_reader.should eq :foo }
     end
   end
 
@@ -40,7 +40,7 @@ describe Mongoid::Userstamp::GemConfig do
     end
     it { ->{ subject }.should_not raise_error }
     it { should be_a Mongoid::Userstamp::GemConfig }
-    its(:created_name){ should eq :bing }
-    its(:updated_name){ should eq :baz }
+    it { subject.created_name.should eq :bing }
+    it { subject.updated_name.should eq :baz }
   end
 end

@@ -24,33 +24,33 @@ describe Mongoid::Userstamp::Model do
     context 'when options are not given' do
       subject{ Book.mongoid_userstamp_config }
       it { should be_a Mongoid::Userstamp::ModelConfig }
-      its(:user_model) { should eq Admin }
-      its(:created_name) { should eq :created_by }
-      its(:updated_name) { should eq :updated_by }
+      it { subject.user_model.should eq Admin }
+      it { subject.created_name.should eq :created_by }
+      it { subject.updated_name.should eq :updated_by }
     end
 
     context 'when options are given' do
       subject{ Book.mongoid_userstamp_config(user_model: 'User', created_name: :foo, updated_name: :bar) }
       it { should be_a Mongoid::Userstamp::ModelConfig }
-      its(:user_model) { should eq 'User' }
-      its(:created_name) { should eq :foo }
-      its(:updated_name) { should eq :bar }
+      it { subject.user_model.should eq 'User' }
+      it { subject.created_name.should eq :foo }
+      it { subject.updated_name.should eq :bar }
     end
 
     context 'when mongoid_userstamp_user has been set' do
       subject{ Book.mongoid_userstamp_config; Book.mongoid_userstamp_config(user_model: 'User', created_name: :foo, updated_name: :bar) }
       it { should be_a Mongoid::Userstamp::ModelConfig }
-      its(:user_model) { should eq Admin }
-      its(:created_name) { should eq :created_by }
-      its(:updated_name) { should eq :updated_by }
+      it { subject.user_model.should eq Admin }
+      it { subject.created_name.should eq :created_by }
+      it { subject.updated_name.should eq :updated_by }
     end
 
     context 'when set via mongoid_userstamp method' do
       subject{ Book.mongoid_userstamp(user_model: 'User', created_name: :foo, updated_name: :bar); Book.mongoid_userstamp_config }
       it { should be_a Mongoid::Userstamp::ModelConfig }
-      its(:user_model) { should eq 'User' }
-      its(:created_name) { should eq :foo }
-      its(:updated_name) { should eq :bar }
+      it { subject.user_model.should eq 'User' }
+      it { subject.created_name.should eq :foo }
+      it { subject.updated_name.should eq :bar }
     end
   end
 

@@ -12,12 +12,12 @@ describe Mongoid::Userstamp::UserConfig do
       subject { Mongoid::Userstamp::UserConfig.new({reader: :bar}) }
 
       it { should be_a Mongoid::Userstamp::UserConfig }
-      its(:reader){ should eq :bar }
+      it { subject.reader.should eq :bar }
     end
 
     context 'without opts hash' do
       it { should be_a Mongoid::Userstamp::UserConfig }
-      its(:reader){ should eq :foo }
+      it { subject.reader.should eq :foo }
     end
   end
 end

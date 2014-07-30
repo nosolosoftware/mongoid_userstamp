@@ -17,30 +17,30 @@ describe Mongoid::Userstamp::User do
     context 'when current users are not set' do
       it { Admin.current.should be_nil }
       it { User.current.should be_nil }
-      it { admin_1.current?.should be_false }
-      it { admin_2.current?.should be_false }
-      it { user_1.current?.should be_false }
-      it { user_2.current?.should be_false }
+      it { admin_1.current?.should be_falsey }
+      it { admin_2.current?.should be_falsey }
+      it { user_1.current?.should be_falsey }
+      it { user_2.current?.should be_falsey }
     end
 
     context 'when current User is set' do
       before{ User.current = user_1 }
       it { User.current.should eq user_1 }
       it { Admin.current.should be_nil }
-      it { admin_1.current?.should be_false }
-      it { admin_2.current?.should be_false }
-      it { user_1.current?.should be_true }
-      it { user_2.current?.should be_false }
+      it { admin_1.current?.should be_falsey }
+      it { admin_2.current?.should be_falsey }
+      it { user_1.current?.should be_truthy }
+      it { user_2.current?.should be_falsey }
     end
 
     context 'when current Admin is set' do
       before{ Admin.current = admin_1 }
       it { User.current.should be_nil }
       it { Admin.current.should eq admin_1 }
-      it { admin_1.current?.should be_true }
-      it { admin_2.current?.should be_false }
-      it { user_1.current?.should be_false }
-      it { user_2.current?.should be_false }
+      it { admin_1.current?.should be_truthy }
+      it { admin_2.current?.should be_falsey }
+      it { user_1.current?.should be_falsey }
+      it { user_2.current?.should be_falsey }
     end
   end
 
@@ -77,19 +77,19 @@ describe Mongoid::Userstamp::User do
     context 'when options are not given' do
       subject{ User.mongoid_userstamp_user }
       it { should be_a Mongoid::Userstamp::UserConfig }
-      its(:reader) { should eq :current_user  }
+      it { subject.reader.should eq :current_user  }
     end
 
     context 'when options are given' do
       subject{ User.mongoid_userstamp_user(reader: :foo) }
       it { should be_a Mongoid::Userstamp::UserConfig }
-      its(:reader) { should eq :foo  }
+      it { subject.reader.should eq :foo  }
     end
 
     context 'when mongoid_userstamp_user has been set' do
       subject{ User.mongoid_userstamp_user; User.mongoid_userstamp_user(reader: :foo) }
       it { should be_a Mongoid::Userstamp::UserConfig }
-      its(:reader) { should eq :current_user  }
+      it { subject.reader.should eq :current_user  }
     end
   end
 end
