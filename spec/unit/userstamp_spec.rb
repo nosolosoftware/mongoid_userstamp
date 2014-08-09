@@ -82,7 +82,7 @@ describe Mongoid::Userstamp do
   describe '#user_classes' do
     before { Mongoid::Userstamp.instance_variable_set(:'@user_classes', nil) }
     context 'default value' do
-      it { subject.user_classes.should eq [User] }
+      it { subject.user_classes.should eq [] }
     end
     context 'setting values' do
       before do

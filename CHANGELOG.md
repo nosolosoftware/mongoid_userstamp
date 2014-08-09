@@ -4,6 +4,7 @@
 
 * Improvement
   * BREAKING: Change userstamp keys to use Mongoid relations. This will change the underlying database field names, and as such will require a migration.
+  * BREAKING: Do not include Mongoid::Userstamp in "User" class by default.
   * Mongoid::Userstamp config initializer is now optional.
   * Add support for multiple user classes.
   * Add class-level config override capability for both users and userstamped model classes.

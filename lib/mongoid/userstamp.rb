@@ -58,7 +58,7 @@ module Mongoid
       end
 
       def user_classes
-        (@user_classes || ['User']).map{|c| c.is_a?(Class) ? c : c.to_s.classify.constantize }
+        (@user_classes || []).map{|c| c.is_a?(Class) ? c : c.to_s.classify.constantize }
       end
 
       def add_user_class(user)
