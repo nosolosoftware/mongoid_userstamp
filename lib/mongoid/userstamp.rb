@@ -1,88 +1,77 @@
 # -*- encoding : utf-8 -*-
 
 module Mongoid
+
   module Userstamp
     extend ActiveSupport::Concern
 
     included do
-      field Userstamp.config.updated_column, Userstamp.field_opts(Userstamp.config.updated_column_opts)
-      field Userstamp.config.created_column, Userstamp.field_opts(Userstamp.config.created_column_opts)
+      Mongoid::Userstamp.add_model_class(self)
+    end
 
-      before_save :set_updater
-      before_create :set_creator
+    module ClassMethods
 
-      define_method Userstamp.config.updated_accessor do
-        Userstamp.find_user self.send(Userstamp.config.updated_column)
+      def mongoid_userstamp(opts = {})
+        mongoid_userstamp_config(opts)
+        self.send(:include, Mongoid::Userstamp::Model) unless self.included_modules.include?(Mongoid::Userstamp::Model)
       end
 
-      define_method Userstamp.config.created_accessor do
-        Userstamp.find_user self.send(Userstamp.config.created_column)
-      end
-
-      define_method "#{Userstamp.config.updated_accessor}=" do |user|
-        self.send("#{Userstamp.config.updated_column}=", Userstamp.extract_bson_id(user))
-      end
-
-      define_method "#{Userstamp.config.created_accessor}=" do |user|
-        self.send("#{Userstamp.config.created_column}=", Userstamp.extract_bson_id(user))
-      end
-
-      protected
-
-      def set_updater
-        return if !Userstamp.has_current_user?
-        self.send("#{Userstamp.config.updated_accessor}=", Userstamp.current_user)
-      end
-
-      def set_creator
-        return if !Userstamp.has_current_user? || self.send(Userstamp.config.created_column)
-        self.send("#{Userstamp.config.created_accessor}=", Userstamp.current_user)
+      def mongoid_userstamp_config(opts = {})
+        @mongoid_userstamp_config ||= Mongoid::Userstamp::ModelConfig.new(opts)
       end
     end
 
     class << self
+
       def config(&block)
-        if block_given?
-          @@config = Userstamp::Config.new(&block)
-        else
-          @@config ||= Userstamp::Config.new
-        end
+        @config ||= Mongoid::Userstamp::GemConfig.new(&block)
       end
 
-      # DEPRECATED
+      # @deprecated
       def configure(&block)
         warn 'Mongoid::Userstamp.configure is deprecated. Please use Mongoid::Userstamp.config instead'
-        config(block)
+        config(&block)
       end
 
-      def field_opts(opts)
-        {type: ::Moped::BSON::ObjectId}.reverse_merge(opts || {})
+      def current_user(user_class = nil)
+        user_class ||= user_classes.first
+        store[userstamp_key(user_class)]
       end
 
-      def has_current_user?
-        config.user_model.respond_to?(:current)
+      def current_user=(value)
+        set_current_user(value)
       end
 
-      def current_user
-        config.user_model.try(:current)
+      # It is better to provide the user class, in case the value is nil.
+      def set_current_user(value, user_class = nil)
+        user_class ||= value ? value.class : user_classes.first
+        store[userstamp_key(user_class)] = value
       end
 
-      def extract_bson_id(value)
-        if value.respond_to?(:_id)
-          value.try(:_id)
-        elsif value.present?
-          ::Moped::BSON::ObjectId.from_string(value.to_s)
-        else
-          nil
-        end
+      def model_classes
+        (@model_classes || []).map{|c| c.is_a?(Class) ? c : c.to_s.classify.constantize }
       end
 
-      def find_user(user_id)
-        begin
-          user_id ? Userstamp.config.user_model.unscoped.find(user_id) : nil
-        rescue Mongoid::Errors::DocumentNotFound => e
-          nil
-        end
+      def add_model_class(model)
+        @model_classes ||= []
+        @model_classes << model
+      end
+
+      def user_classes
+        (@user_classes || []).map{|c| c.is_a?(Class) ? c : c.to_s.classify.constantize }
+      end
+
+      def add_user_class(user)
+        @user_classes ||= []
+        @user_classes << user
+      end
+
+      def userstamp_key(model)
+        "mongoid_userstamp/#{model.to_s.underscore}".to_sym
+      end
+
+      def store
+        defined?(RequestStore) ? RequestStore.store : Thread.current
       end
     end
   end

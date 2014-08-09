@@ -1,5 +1,20 @@
 # Changelog
 
+## [0.4.0](https://github.com/tbpro/mongoid_userstamp/releases/tag/v0.4.0) - 2014-02-24
+
+* Improvement
+  * BREAKING: Change userstamp keys to use Mongoid relations. This will change the underlying database field names, and as such will require a migration.
+  * BREAKING: Do not include Mongoid::Userstamp in "User" class by default.
+  * Mongoid::Userstamp config initializer is now optional.
+  * Add support for multiple user classes.
+  * Add class-level config override capability for both users and userstamped model classes.
+  * Add automatic support for `RequestStore` gem as drop-in replacement for `Thread.current`
+* Refactor
+  * DEPRECATION: `created_column` config is now `created_name`
+  * DEPRECATION: `created_updated` config is now `created_updated`
+  * DEPRECATION: `user_model` config is no longer used. Instead, include Mongoid::Userstamp::User in your user model.
+  * Substantial refactoring of all classes and test cases. Among other changes, all access to `Thread.current` variables is now done in the Mongoid::Userstamp module singleton.
+
 ## [0.3.2](https://github.com/tbpro/mongoid_userstamp/releases/tag/v0.3.2) - 2014-01-12
 
 * Fix bad gem release
