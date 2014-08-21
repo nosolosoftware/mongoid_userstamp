@@ -1,5 +1,10 @@
 # Changelog
 
+## [0.4.1](https://github.com/tbpro/mongoid_userstamp/releases/tag/v0.4.1) - 2014-08-21
+
+* Improvement
+  * Do not overwrite the `updater` if has been manually set (i.e. is in a dirty state.)
+
 ## [0.4.0](https://github.com/tbpro/mongoid_userstamp/releases/tag/v0.4.0) - 2014-02-24
 
 * Improvement

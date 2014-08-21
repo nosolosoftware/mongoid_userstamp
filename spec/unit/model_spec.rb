@@ -112,7 +112,7 @@ describe Mongoid::Userstamp::Model do
         Admin.current = admin_1
         book.created_by = user_2
         book.save!
-        post.writer = admin_2
+        post.writer_id = admin_2._id
         post.save!
       end
 
@@ -128,14 +128,14 @@ describe Mongoid::Userstamp::Model do
         Admin.current = admin_1
         book.updated_by = user_2
         book.save!
-        post.editor = admin_2
+        post.editor_id = admin_2._id
         post.save!
       end
 
       it { book.created_by.should eq user_1 }
-      it { book.updated_by.should eq user_1 }
+      it { book.updated_by.should eq user_2 }
       it { post.writer.should eq admin_1 }
-      it { post.editor.should eq admin_1 }
+      it { post.editor.should eq admin_2 }
     end
 
     context 'when user has been destroyed' do
