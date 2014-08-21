@@ -70,6 +70,17 @@ Mongoid::Userstamp does the following:
 ```
 
 
+## Preservation of Manually-set Values
+
+Mongoid::Userstamp will not overwrite manually set values in the `creator` and `updater` fields. Specifically:
+
+* The `creator` is only set during the creation of new models (`before_create` callback). Mongoid::Userstamp will not
+overwrite the `creator` field if it already contains a value (i.e. was manually set.)
+* The `updater` is set each time the model is saved (`before_create` callback), which includes the initial
+creation. Mongoid::Userstamp will not overwrite the `updater` field if it been modified since the last save, as
+per Mongoid's built-in "dirty tracking" feature.
+
+
 ## Rails Integration
 
 Popular Rails authentication frameworks such as Devise and Sorcery make a `current_user` method available in
@@ -86,6 +97,23 @@ Mongoid::Userstamp stores all-related user variables in `Thread.current`. If the
 [RequestStore](https://github.com/steveklabnik/request_store) gem is installed, Mongoid::Userstamp
 will automatically store variables in the `RequestStore.store` instead. RequestStore is recommended
 for threaded web servers like Thin or Puma.
+
+
+## Advanced Usage: Scoped Execution
+
+It is possible to execute a block of code within the context of a given user as follows:
+
+```ruby
+User.current = staff
+User.current          #=> staff
+
+User.do_as(admin) do
+  my_model.save!
+  User.current        #=> admin
+end
+
+User.current          #=> staff
+```
 
 
 ## Advanced Usage: Multiple User Classes

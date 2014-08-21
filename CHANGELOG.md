@@ -5,6 +5,10 @@
 * Improvement
   * Do not overwrite the `updater` if has been manually set (i.e. is in a dirty state.)
 
+* Documentation
+  * Document `User.do_as` feature.
+
+
 ## [0.4.0](https://github.com/tbpro/mongoid_userstamp/releases/tag/v0.4.0) - 2014-02-24
 
 * Improvement

@@ -28,13 +28,10 @@ module Userstamp
 
       def do_as(user, &block)
         old = self.current
-        begin
-          self.current = user
-          response = block.call unless block.nil?
-        ensure
-          self.current = old
-        end
-        response
+        self.current = user
+        yield
+      ensure
+        self.current = old
       end
 
       def mongoid_userstamp_user(opts = {})
