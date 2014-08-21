@@ -6,7 +6,8 @@ describe Mongoid::Userstamp do
   subject{ Mongoid::Userstamp }
 
   let(:user_1){ User.create!(name: 'Edmund Wells') }
-  let(:user_2){ Admin.create!(name: 'JK Rowling') }
+  let(:user_2){ User.create!(name: 'Charles Dikkens') }
+  let(:admin_1){ Admin.create!(name: 'JK Rowling') }
 
   describe '#config' do
 
@@ -43,7 +44,7 @@ describe Mongoid::Userstamp do
   describe '#current_user' do
     before do
       Mongoid::Userstamp.set_current_user(user_1)
-      Mongoid::Userstamp.set_current_user(user_2)
+      Mongoid::Userstamp.set_current_user(admin_1)
     end
     context 'when user_class is User' do
       subject{ Mongoid::Userstamp.current_user('User') }
@@ -51,7 +52,7 @@ describe Mongoid::Userstamp do
     end
     context 'when user_class is Admin' do
       subject{ Mongoid::Userstamp.current_user('Admin') }
-      it{ should eq user_2 }
+      it{ should eq admin_1 }
     end
     context 'when user_class is other' do
       subject{ Mongoid::Userstamp.current_user('foobar') }
@@ -60,7 +61,7 @@ describe Mongoid::Userstamp do
     context 'when user_class is not given' do
       subject{ Mongoid::Userstamp.current_user }
       it 'should use the default user_class' do
-        should eq user_2
+        should eq admin_1
       end
     end
   end
