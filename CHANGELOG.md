@@ -4,6 +4,7 @@
 
 * Improvement
   * Do not overwrite the `updater` if has been manually set (i.e. is in a dirty state.)
+  * Add specs for Rails 4/Mongoid 4
 
 * Documentation
   * Document `User.do_as` feature.
