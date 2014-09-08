@@ -10,6 +10,7 @@ Mongoid::Userstamp is tested on the following versions:
 * Ruby 1.9.3 and 2.0.0
 * Rails 3
 * Mongoid 3
+* Mongoid 4
 
 ## Install
 

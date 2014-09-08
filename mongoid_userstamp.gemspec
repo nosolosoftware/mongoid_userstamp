@@ -20,7 +20,7 @@ Gem::Specification.new do |s|
 
   s.add_runtime_dependency 'mongoid', '>= 3.0.4'
   s.add_development_dependency 'rake'
-  s.add_development_dependency 'rspec', '>= 3.0.0'
+  s.add_development_dependency 'rspec', '~> 3.0.0'
   s.add_development_dependency 'yard'
   s.add_development_dependency 'gem-release'
   s.add_development_dependency 'request_store'
