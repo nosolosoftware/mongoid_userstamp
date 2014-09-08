@@ -7,10 +7,9 @@ information within Rails applications using Mongoid ORM.
 
 Mongoid::Userstamp is tested on the following versions:
 
-* Ruby 1.9.3 and 2.0.0
-* Rails 3
-* Mongoid 3
-* Mongoid 4
+* Ruby 1.9.3, 2.0, and 2.1
+* Rails 3.2 and 4
+* Mongoid 3.1 and 4
 
 ## Install
 
