@@ -44,7 +44,7 @@ Mongoid::Userstamp does the following:
     #                   updated_name: :updater,
   end
  
-  # Example user class (you can skip this step you have a single user class is named "User")
+  # Example user class
   class MyUser
     include Mongoid::Document
     include Mongoid::Userstamp::User
