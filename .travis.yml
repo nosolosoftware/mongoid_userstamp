@@ -12,6 +12,8 @@ rvm:
 env:
   - MONGOID_VERSION=3
   - MONGOID_VERSION=4
+  - MONGOID_VERSION=5
+
 
 matrix:
   allow_failures:

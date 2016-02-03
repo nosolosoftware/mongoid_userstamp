@@ -3,6 +3,8 @@ source 'http://rubygems.org'
 gemspec
 
 case version = ENV['MONGOID_VERSION'] || '~> 4.0'
+when /5/
+  gem 'mongoid', github: 'mongodb/mongoid'
 when /4/
   gem 'mongoid', '~> 4.0'
 when /3/
