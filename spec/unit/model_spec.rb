@@ -1,7 +1,7 @@
 # -*- encoding : utf-8 -*-
 require 'spec_helper'
 
-describe Mongoid::Userstamp::Model do
+describe Mongoid::Userstamp::ModelMixin do
 
   subject(:book) { Book.new(name: 'Crafting Rails Applications') }
   subject(:post) { Post.new(title: 'Understanding Rails') }

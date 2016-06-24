@@ -22,7 +22,8 @@ Mongoid::Userstamp is tested on the following versions:
 Mongoid::Userstamp does the following:
 * Defines Mongoid `belongs_to` relations to the user class for `created_by` and `updated_by` on each class where `Mongoid::Userstamp` is included
 * Automatically tracks the current user via a `before_filter` (see Rails Integration below)
-* Sets the `created_by` and `updated_by` values in `before_save` and `before_update` callbacks respectively on the target models.
+* Sets the `created_by` in `before_validation` only if new_record (before_validation on_create)
+* Sets the `updated_by` value in `before_update` callback on the target models.
 * Adds methods to the user class to check for the current user.
 
 ```ruby
@@ -43,11 +44,11 @@ Mongoid::Userstamp does the following:
     #                   created_name: :creator,
     #                   updated_name: :updater,
   end
- 
+
   # Example user class
   class MyUser
     include Mongoid::Document
-    include Mongoid::Userstamp::User
+    include Mongoid::Userstamp::UserMixin
 
     # optional class-level config override
     # mongoid_userstamp_user reader: :current_my_user
@@ -74,9 +75,9 @@ Mongoid::Userstamp does the following:
 
 Mongoid::Userstamp will not overwrite manually set values in the `creator` and `updater` fields. Specifically:
 
-* The `creator` is only set during the creation of new models (`before_create` callback). Mongoid::Userstamp will not
+* The `creator` is only set during the creation of new models (`before_validation` callback if new_record). Mongoid::Userstamp will not
 overwrite the `creator` field if it already contains a value (i.e. was manually set.)
-* The `updater` is set each time the model is saved (`before_create` callback), which includes the initial
+* The `updater` is set each time the model is saved (`before_validation` callback if new_record), which includes the initial
 creation. Mongoid::Userstamp will not overwrite the `updater` field if it been modified since the last save, as
 per Mongoid's built-in "dirty tracking" feature.
 
@@ -127,14 +128,14 @@ Please note that each model may subscribe to only one user type for its userstam
 ```ruby
   class Admin
     include Mongoid::Document
-    include Mongoid::Userstamp::User
+    include Mongoid::Userstamp::UserMixin
 
     mongoid_userstamp_user reader: :current_admin
   end
 
   class Customer
     include Mongoid::Document
-    include Mongoid::Userstamp::User
+    include Mongoid::Userstamp::UserMixin
 
     mongoid_userstamp_user reader: :current_customer
   end

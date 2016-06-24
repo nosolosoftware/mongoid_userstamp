@@ -5,11 +5,11 @@ module Userstamp
 
   class Railtie < Rails::Railtie
 
-    # Include Mongoid::Userstamp::User into User class, if not already done
+    # Include Mongoid::Userstamp::UserMixin into User class, if not already done
     config.to_prepare do
       Mongoid::Userstamp.user_classes.each do |user_class|
-        unless user_class.included_modules.include?(Mongoid::Userstamp::User)
-          user_class.send(:include, Mongoid::Userstamp::User)
+        unless user_class.included_modules.include?(Mongoid::Userstamp::UserMixin)
+          user_class.send(:include, Mongoid::Userstamp::UserMixin)
         end
       end
     end
@@ -18,8 +18,8 @@ module Userstamp
     # mongoid_userstamp was not explicitly called
     config.to_prepare do
       Mongoid::Userstamp.model_classes.each do |model_class|
-        unless model_class.included_modules.include?(Mongoid::Userstamp::Model)
-          model_class.send(:include, Mongoid::Userstamp::Model)
+        unless model_class.included_modules.include?(Mongoid::Userstamp::ModelMixin)
+          model_class.send(:include, Mongoid::Userstamp::ModelMixin)
         end
       end
     end

@@ -22,7 +22,7 @@
 * Refactor
   * DEPRECATION: `created_column` config is now `created_name`
   * DEPRECATION: `created_updated` config is now `created_updated`
-  * DEPRECATION: `user_model` config is no longer used. Instead, include Mongoid::Userstamp::User in your user model.
+  * DEPRECATION: `user_model` config is no longer used. Instead, include Mongoid::Userstamp::UserMixin in your user model.
   * Substantial refactoring of all classes and test cases. Among other changes, all access to `Thread.current` variables is now done in the Mongoid::Userstamp module singleton.
 
 ## [0.3.2](https://github.com/tbpro/mongoid_userstamp/releases/tag/v0.3.2) - 2014-01-12
