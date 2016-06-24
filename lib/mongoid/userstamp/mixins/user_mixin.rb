@@ -3,7 +3,7 @@
 module Mongoid
 module Userstamp
 
-  module User
+  module UserMixin
 
     extend ActiveSupport::Concern
 
