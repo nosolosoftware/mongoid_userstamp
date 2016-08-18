@@ -19,7 +19,7 @@ module Userstamp
 
     # @deprecated
     def user_model=(value)
-      warn 'Mongoid::Userstamp `user_model` config is removed as of v0.4.0. If using a model named other than `User`, please include `Mongoid::Userstamp::User` in your user model instead.'
+      warn 'Mongoid::Userstamp `user_model` config is removed as of v0.4.0. If using a model named other than `User`, please include `Mongoid::Userstamp::UserstampUser` in your user model instead.'
     end
 
     # @deprecated
