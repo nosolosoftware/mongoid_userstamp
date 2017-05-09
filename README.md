@@ -21,7 +21,7 @@ Mongoid::Userstamp is tested on the following versions:
 
 Mongoid::Userstamp does the following:
 * Defines Mongoid `belongs_to` relations to the user class for `created_by` and `updated_by` on each class where `Mongoid::Userstamp` is included
-* Automatically tracks the current user via a `before_filter` (see Rails Integration below)
+* Automatically tracks the current user via a `before_action` (see Rails Integration below)
 * Sets the `created_by` and `updated_by` values in `before_save` and `before_update` callbacks respectively on the target models.
 * Adds methods to the user class to check for the current user.
 
