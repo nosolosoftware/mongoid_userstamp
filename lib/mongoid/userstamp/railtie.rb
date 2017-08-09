@@ -26,13 +26,19 @@ module Userstamp
 
     # Set current_user from controller reader method
     ActiveSupport.on_load :action_controller do
-      before_action do |c|
+      set_current = Proc.new do |c|
         Mongoid::Userstamp.user_classes.each do |user_class|
           begin
             user_class.current = c.send(user_class.mongoid_userstamp_user.reader)
           rescue
           end
         end
+      end
+
+      if respond_to?(:before_filter)
+        before_filter { |c| set_current.call(c)}
+      else
+        before_action { |c| set_current.call(c)}
       end
     end
   end
