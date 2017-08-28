@@ -35,10 +35,10 @@ module Userstamp
         end
       end
 
-      if respond_to?(:before_filter)
-        before_filter { |c| set_current.call(c)}
-      else
+      if respond_to?(:before_action)
         before_action { |c| set_current.call(c)}
+      else
+        before_filter { |c| set_current.call(c)}
       end
     end
   end
