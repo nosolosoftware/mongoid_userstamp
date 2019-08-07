@@ -1,4 +1,10 @@
-# Mongoid::Userstamp [![Build Status](https://secure.travis-ci.org/tbpro/mongoid_userstamp.png)](https://travis-ci.org/tbpro/mongoid_userstamp) [![Code Climate](https://codeclimate.com/github/tbpro/mongoid_userstamp.png)](https://codeclimate.com/github/tbpro/mongoid_userstamp)
+# Mongoid::Userstamp
+
+# :warning: Looking for maintainer :warning:
+
+> I do not use MongoDB for my work so I am looking for a developer who wants to take care of this
+> project. Please contact me at issues.
+
 
 Mongoid::Userstamp adds stamp columns for created by and updated by
 information within Rails applications using Mongoid ORM.
