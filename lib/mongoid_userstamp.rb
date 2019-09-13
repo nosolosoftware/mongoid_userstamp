@@ -7,4 +7,4 @@ require 'mongoid/userstamp/config/model_config'
 require 'mongoid/userstamp/config/user_config'
 require 'mongoid/userstamp/mixins/user'
 require 'mongoid/userstamp/mixins/model'
-require 'mongoid/userstamp/railtie' if defined? Rails
+require 'mongoid/userstamp/railtie' if defined? Rails::Railtie
