@@ -1,5 +1,6 @@
 language: ruby
 rvm:
+  - 2.2.2
   - 2.1.0
   - 2.0.0
   - ruby-head
@@ -10,6 +11,7 @@ env:
   - MONGOID_VERSION=3
   - MONGOID_VERSION=4
   - MONGOID_VERSION=5
+  - MONGOID_VERSION=6
 
 matrix:
   allow_failures:
