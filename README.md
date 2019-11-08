@@ -28,7 +28,7 @@ Mongoid::Userstamp is tested on the following versions:
 Mongoid::Userstamp does the following:
 * Defines Mongoid `belongs_to` relations to the user class for `created_by` and `updated_by` on each class where `Mongoid::Userstamp` is included
 * Automatically tracks the current user via a `before_filter` (see Rails Integration below)
-* Sets the `created_by` and `updated_by` values in `before_save` and `before_update` callbacks respectively on the target models.
+* Sets the `created_by` and `updated_by` values in `before_create` and `before_save` callbacks respectively on the target models.
 * Adds methods to the user class to check for the current user.
 
 ```ruby
@@ -82,7 +82,7 @@ Mongoid::Userstamp will not overwrite manually set values in the `creator` and `
 
 * The `creator` is only set during the creation of new models (`before_create` callback). Mongoid::Userstamp will not
 overwrite the `creator` field if it already contains a value (i.e. was manually set.)
-* The `updater` is set each time the model is saved (`before_create` callback), which includes the initial
+* The `updater` is set each time the model is saved (`before_save` callback), which includes the initial
 creation. Mongoid::Userstamp will not overwrite the `updater` field if it been modified since the last save, as
 per Mongoid's built-in "dirty tracking" feature.
 
