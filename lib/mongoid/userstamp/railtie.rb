@@ -5,11 +5,11 @@ module Userstamp
 
   class Railtie < Rails::Railtie
 
-    # Include Mongoid::Userstamp::User into User class, if not already done
+    # Include Mongoid::Userstamp::UserstampUser into User class, if not already done
     config.to_prepare do
       Mongoid::Userstamp.user_classes.each do |user_class|
-        unless user_class.included_modules.include?(Mongoid::Userstamp::User)
-          user_class.send(:include, Mongoid::Userstamp::User)
+        unless user_class.included_modules.include?(Mongoid::Userstamp::UserstampUser)
+          user_class.send(:include, Mongoid::Userstamp::UserstampUser)
         end
       end
     end

@@ -53,7 +53,7 @@ Mongoid::Userstamp does the following:
   # Example user class
   class MyUser
     include Mongoid::Document
-    include Mongoid::Userstamp::User
+    include Mongoid::Userstamp::UserstampUser
 
     # optional class-level config override
     # mongoid_userstamp_user reader: :current_my_user
@@ -133,14 +133,14 @@ Please note that each model may subscribe to only one user type for its userstam
 ```ruby
   class Admin
     include Mongoid::Document
-    include Mongoid::Userstamp::User
+    include Mongoid::Userstamp::UserstampUser
 
     mongoid_userstamp_user reader: :current_admin
   end
 
   class Customer
     include Mongoid::Document
-    include Mongoid::Userstamp::User
+    include Mongoid::Userstamp::UserstampUser
 
     mongoid_userstamp_user reader: :current_customer
   end
