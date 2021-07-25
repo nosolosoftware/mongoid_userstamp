@@ -1,41 +1,41 @@
-# -*- encoding : utf-8 -*-
+# frozen_string_literal: true
 
 module Mongoid
-module Userstamp
+  module Userstamp
+    module Model
+      extend ActiveSupport::Concern
 
-  module Model
+      included do
+        belongs_to _userstamp_model_config.created_by_field, class_name: _userstamp_model_config.user_class_name,
+                                                             inverse_of: nil, optional: true
+        belongs_to _userstamp_model_config.updated_by_field, class_name: _userstamp_model_config.user_class_name,
+                                                             inverse_of: nil, optional: true
 
-    extend ActiveSupport::Concern
+        before_create :set_created_by
+        before_save :set_updated_by
 
-    included do
+        protected
 
-      belongs_to mongoid_userstamp_config.created_name, class_name: mongoid_userstamp_config.user_model, inverse_of: nil
-      belongs_to mongoid_userstamp_config.updated_name, class_name: mongoid_userstamp_config.user_model, inverse_of: nil
+        def set_created_by
+          current_user = Mongoid::Userstamp.current_user(self.class._userstamp_model_config.user_class_name)
+          return if current_user.blank? || send(self.class._userstamp_model_config.created_by_field)
 
-      before_create :set_created_by
-      before_save :set_updated_by
+          send("#{self.class._userstamp_model_config.created_by_field}=", current_user)
+        end
 
-      protected
+        def set_updated_by
+          current_user = Mongoid::Userstamp.current_user(self.class._userstamp_model_config.user_class_name)
+          return if current_user.blank? || send("#{self.class._userstamp_model_config.updated_by_field}_id_changed?")
 
-      def set_created_by
-        current_user = Mongoid::Userstamp.current_user(self.class.mongoid_userstamp_config.user_model)
-        return if current_user.blank? || self.send(self.class.mongoid_userstamp_config.created_name)
-        self.send("#{self.class.mongoid_userstamp_config.created_name}=", current_user)
-      end
-
-      def set_updated_by
-        current_user = Mongoid::Userstamp.current_user(self.class.mongoid_userstamp_config.user_model)
-        return if current_user.blank? || self.send("#{self.class.mongoid_userstamp_config.updated_name}_id_changed?")
-        self.send("#{self.class.mongoid_userstamp_config.updated_name}=", current_user)
+          send("#{self.class._userstamp_model_config.updated_by_field}=", current_user)
+        end
       end
     end
 
-    module ClassMethods
-
+    class_methods do
       def current_user
-        Mongoid::Userstamp.current_user(mongoid_userstamp_config.user_model)
+        Mongoid::Userstamp.current_user(_userstamp_model_config.user_class_name)
       end
     end
   end
-end
 end

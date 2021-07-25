@@ -1,0 +1,13 @@
+Mongoid::Userstamp
+------------------
+Note breaking API name changes when upgrading to 0.5.0:
+
+* GlobalConfig#created_name --> created_by_field
+* GlobalConfig#updated_name --> updated_by_field
+* GlobalConfig#user_reader --> controller_current_user
+* Model.mongoid_userstamp --> userstamp
+  * option :created_name --> :created_by_field
+  * option :updated_name --> :updated_by_field
+* User.mongoid_userstamp_user --> userstamp_user
+  * option :reader --> :controller_current_user
+* User.current --> User.current_user / current_user= / current_user?

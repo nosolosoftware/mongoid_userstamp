@@ -1,9 +1,10 @@
-# -*- encoding : utf-8 -*-
+# frozen_string_literal: true
+
 class Book
   include Mongoid::Document
   include Mongoid::Userstamp
 
-  mongoid_userstamp user_model: 'User'
+  userstamp user_class_name: 'User'
 
   field :name
 end

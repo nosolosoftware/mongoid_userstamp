@@ -1,42 +1,41 @@
 # Mongoid::Userstamp
 
-# :warning: Looking for maintainer :warning:
+[![Build Status](https://github.com/tablecheck/mongoid_userstamp/actions/workflows/test.yml/badge.svg?query=branch%3Amaster)](https://github.com/tablecheck/mongoid_userstamp/actions/workflows/test.yml?query=branch%3Amaster)
+[![Gem Version](https://img.shields.io/gem/v/mongoid_userstamp.svg)](https://rubygems.org/gems/mongoid_userstamp)
 
-> I do not use MongoDB for my work so I am looking for a developer who wants to take care of this
-> project. Please contact me at issues.
-
-
-Mongoid::Userstamp adds stamp columns for created by and updated by
-information within Rails applications using Mongoid ORM.
+Mongoid::Userstamp adds user relations for created_by and updated_by
+within Rails applications using Mongoid.
 
 ## Version Support
 
 Mongoid::Userstamp is tested on the following versions:
 
-* Ruby 2.0+
-* Rails 3.2, 4.x
-* Mongoid 3.1, 4.x, 5.x
+* Ruby 2.5+
+* Rails 5.x+
+* Mongoid 7.x+
+
+For legacy support, please use an older version of Mongoid::Userstamp.
 
 ## Install
 
 ```ruby
-  gem 'mongoid_userstamp'
+gem 'mongoid_userstamp'
 ```
 
 ## Usage
 
 Mongoid::Userstamp does the following:
 * Defines Mongoid `belongs_to` relations to the user class for `created_by` and `updated_by` on each class where `Mongoid::Userstamp` is included
-* Automatically tracks the current user via a `before_filter` (see Rails Integration below)
+* Automatically tracks the current user via a `before_action` (see Rails Integration below)
 * Sets the `created_by` and `updated_by` values in `before_save` and `before_update` callbacks respectively on the target models.
 * Adds methods to the user class to check for the current user.
 
 ```ruby
   # Default config (optional unless you want to customize the values)
   Mongoid::Userstamp.config do |c|
-    c.user_reader = :current_user
-    c.created_name = :created_by
-    c.updated_name = :updated_by
+    c.controller_current_user = :current_user
+    c.created_by_field = :created_by
+    c.updated_by_field = :updated_by
   end
 
   # Example model class
@@ -45,9 +44,9 @@ Mongoid::Userstamp does the following:
     include Mongoid::Userstamp
 
     # optional class-level config override
-    # mongoid_userstamp user_model: 'MyUser',
-    #                   created_name: :creator,
-    #                   updated_name: :updater,
+    # userstamp user_class_name: 'MyUser',
+    #           created_by_field: :creator,
+    #           updated_by_field: :updater,
   end
  
   # Example user class
@@ -56,7 +55,7 @@ Mongoid::Userstamp does the following:
     include Mongoid::Userstamp::User
 
     # optional class-level config override
-    # mongoid_userstamp_user reader: :current_my_user
+    # userstamp_user controller_current_user: :current_my_user
   end
 
   # Create instance
@@ -78,23 +77,23 @@ Mongoid::Userstamp does the following:
 
 ## Preservation of Manually-set Values
 
-Mongoid::Userstamp will not overwrite manually set values in the `creator` and `updater` fields. Specifically:
+Mongoid::Userstamp will not overwrite manually set values in the `created_by` and `updated_by` fields. Specifically:
 
-* The `creator` is only set during the creation of new models (`before_create` callback). Mongoid::Userstamp will not
-overwrite the `creator` field if it already contains a value (i.e. was manually set.)
-* The `updater` is set each time the model is saved (`before_create` callback), which includes the initial
-creation. Mongoid::Userstamp will not overwrite the `updater` field if it been modified since the last save, as
+* The `created_by` is only set during the creation of new models (`before_create` callback). Mongoid::Userstamp will not
+overwrite the `created_by` field if it already contains a value (i.e. was manually set.)
+* The `updated_by` is set each time the model is saved (`before_create` callback), which includes the initial
+creation. Mongoid::Userstamp will not overwrite the `updated_by` field if it been modified since the last save, as
 per Mongoid's built-in "dirty tracking" feature.
 
 
 ## Rails Integration
 
 Popular Rails authentication frameworks such as Devise and Sorcery make a `current_user` method available in
-your Controllers. Mongoid::Userstamp will automatically use this to set its user reference in a `before_filter`
-on each request. (You can set an alternative method name via the `user_reader` config.)
+your Controllers. Mongoid::Userstamp will automatically use this to set its user reference in a `before_action`
+on each request. (You can set an alternative method name via the `controller_current_user` config.)
 
 *Gotcha:* If you have special controller actions which change/switch the current user to a new user, you will
-need to set `User.current = new_user` after the switch occurs.
+need to set `User.current_user = new_user` after the switch occurs.
 
 
 ## Thread Safety
@@ -110,15 +109,15 @@ for threaded web servers like Thin or Puma.
 It is possible to execute a block of code within the context of a given user as follows:
 
 ```ruby
-User.current = staff
-User.current          #=> staff
+User.current_user = staff
+User.current_user  #=> staff
 
 User.do_as(admin) do
   my_model.save!
-  User.current        #=> admin
+  User.current_user  #=> admin
 end
 
-User.current          #=> staff
+User.current_user  #=> staff
 ```
 
 
@@ -128,35 +127,35 @@ Most Rails apps use a single user model. However, Mongoid::Userstamp supports us
 at once, and will track a separate current_user for each class.
 
 Please note that each model may subscribe to only one user type for its userstamps, set via the
-`:user_model` option.
+`:user_class_name` option.
 
 ```ruby
   class Admin
     include Mongoid::Document
     include Mongoid::Userstamp::User
 
-    mongoid_userstamp_user reader: :current_admin
+    userstamp_user controller_current_user: :current_admin
   end
 
   class Customer
     include Mongoid::Document
     include Mongoid::Userstamp::User
 
-    mongoid_userstamp_user reader: :current_customer
+    userstamp_user controller_current_user: :current_customer
   end
 
   class Album
     include Mongoid::Document
     include Mongoid::Userstamp
 
-    mongoid_userstamp user_model: 'Customer'
+    userstamp user_class_name: 'Customer'
   end
 
   class Label
     include Mongoid::Document
     include Mongoid::Userstamp
 
-    mongoid_userstamp user_model: 'Admin'
+    userstamp user_class_name: 'Admin'
   end
 
   # Set current user for each type
@@ -173,11 +172,13 @@ Please note that each model may subscribe to only one user type for its userstam
   label.created_by.name   #=> 'Biz Markie'
 ```
 
-## Contributing
+## About the Maintainers
 
-Fork -> Patch -> Spec -> Push -> Pull Request
-
-Please use Ruby 1.9.3 hash syntax, as Mongoid 3 requires Ruby >= 1.9.3
+Mongoid::Userstamp is made with ❤ by [TableCheck](https://www.tablecheck.com/en/join/),
+the leading restaurant reservation and guest management app maker.
+If **you** are a ninja-level 🥷 coder (Javascript/Ruby/Elixir/Python/Go),
+designer, product manager, data scientist, QA, etc. and are ready to join us in Tokyo, Japan
+or work remotely, please get in touch at [careers@tablecheck.com](mailto:careers@tablecheck.com).
 
 ## Authors
 
@@ -187,6 +188,7 @@ Please use Ruby 1.9.3 hash syntax, as Mongoid 3 requires Ruby >= 1.9.3
 
 ## Copyright
 
-Copyright (c) 2012-2013 Thomas Boerger Programmierung <http://www.tbpro.de>
+Copyright (c) 2012-2020 Thomas Boerger Programmierung <http://www.tbpro.de>
+Copyright (c) 2021 TableCheck <http://www.tablecheck.com/en/join>
 
 Licensed under the MIT License (MIT). Refer to LICENSE for details.

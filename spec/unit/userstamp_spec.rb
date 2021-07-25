@@ -1,96 +1,95 @@
-# -*- encoding : utf-8 -*-
+# frozen_string_literal: true
+
 require 'spec_helper'
 
 describe Mongoid::Userstamp do
+  subject { Mongoid::Userstamp }
 
-  subject{ Mongoid::Userstamp }
-
-  let(:user_1){ User.create!(name: 'Edmund Wells') }
-  let(:user_2){ User.create!(name: 'Charles Dikkens') }
-  let(:admin_1){ Admin.create!(name: 'JK Rowling') }
+  let(:user1) { User.create!(name: 'Edmund Wells') }
+  let(:user2) { User.create!(name: 'Charles Dikkens') }
+  let(:admin1) { Admin.create!(name: 'JK Rowling') }
 
   describe '#config' do
-
-    before { Mongoid::Userstamp.instance_variable_set(:'@config', nil) }
+    before { Mongoid::Userstamp.instance_variable_set(:@config, nil) }
 
     context 'without block' do
-      subject{ Mongoid::Userstamp.config }
-      it { should be_a Mongoid::Userstamp::GemConfig }
-      it { subject.created_name.should eq :created_by }
-      it { subject.updated_name.should eq :updated_by }
-      it { subject.user_reader.should eq :current_user }
+      subject { Mongoid::Userstamp.config }
+      it { is_expected.to be_a Mongoid::Userstamp::GlobalConfig }
+      it { expect(subject.created_by_field).to eq :created_by }
+      it { expect(subject.updated_by_field).to eq :updated_by }
+      it { expect(subject.controller_current_user).to eq :current_user }
     end
 
     context 'with block' do
       subject do
         Mongoid::Userstamp.config do |u|
-          u.created_name = :c_by
-          u.updated_name = :u_by
-          u.user_reader = :foo
+          u.created_by_field = :c_by
+          u.updated_by_field = :u_by
+          u.controller_current_user = :foo
         end
       end
-      it { should be_a Mongoid::Userstamp::GemConfig }
-      it { subject.created_name.should eq :c_by }
-      it { subject.updated_name.should eq :u_by }
-      it { subject.user_reader.should eq :foo }
+      it { is_expected.to be_a Mongoid::Userstamp::GlobalConfig }
+      it { expect(subject.created_by_field).to eq :c_by }
+      it { expect(subject.updated_by_field).to eq :u_by }
+      it { expect(subject.controller_current_user).to eq :foo }
     end
 
     context 'deprecated method' do
-      subject{ Mongoid::Userstamp.configure }
-      it { should be_a Mongoid::Userstamp::GemConfig }
+      subject { Mongoid::Userstamp.configure }
+      it { is_expected.to be_a Mongoid::Userstamp::GlobalConfig }
     end
   end
 
   describe '#current_user' do
     before do
-      Mongoid::Userstamp.set_current_user(user_1)
-      Mongoid::Userstamp.set_current_user(admin_1)
+      Mongoid::Userstamp.set_current_user(user1)
+      Mongoid::Userstamp.set_current_user(admin1)
     end
     context 'when user_class is User' do
-      subject{ Mongoid::Userstamp.current_user('User') }
-      it{ should eq user_1 }
+      subject { Mongoid::Userstamp.current_user('User') }
+      it { is_expected.to eq user1 }
     end
     context 'when user_class is Admin' do
-      subject{ Mongoid::Userstamp.current_user('Admin') }
-      it{ should eq admin_1 }
+      subject { Mongoid::Userstamp.current_user('Admin') }
+      it { is_expected.to eq admin1 }
     end
     context 'when user_class is other' do
-      subject{ Mongoid::Userstamp.current_user('foobar') }
-      it{ should be_nil }
+      subject { Mongoid::Userstamp.current_user('foobar') }
+      it { is_expected.to be_nil }
     end
     context 'when user_class is not given' do
-      subject{ Mongoid::Userstamp.current_user }
+      subject { Mongoid::Userstamp.current_user }
       it 'should use the default user_class' do
-        should eq admin_1
+        should eq admin1
       end
     end
   end
 
   describe '#model_classes' do
-    before { Mongoid::Userstamp.instance_variable_set(:'@model_classes', nil) }
+    before { Mongoid::Userstamp.instance_variable_set(:@model_classes, nil) }
     context 'default value' do
-      it { subject.model_classes.should eq [] }
+      it { expect(subject.model_classes).to eq [] }
     end
     context 'setting values' do
       before do
         subject.add_model_class 'Book'
         subject.add_model_class 'Post'
       end
-      it { subject.model_classes.should eq [Book, Post] }
+      it { expect(subject.model_classes).to eq [Book, Post] }
     end
   end
 
   describe '#user_classes' do
-    before { Mongoid::Userstamp.instance_variable_set(:'@user_classes', nil) }
+    before { Mongoid::Userstamp.instance_variable_set(:@user_classes, nil) }
     context 'default value' do
-      it { subject.user_classes.should eq [] }
+      it { expect(subject.user_classes).to eq [] }
     end
     context 'setting values' do
       before do
         subject.add_user_class 'Book'
         subject.add_user_class 'Post'
       end
-      it { subject.user_classes.should eq [Book, Post] }
+      it { expect(subject.user_classes).to eq [Book, Post] }
     end
   end
 
@@ -100,22 +99,22 @@ describe Mongoid::Userstamp do
         stub_const('RequestStore', Object.new)
         RequestStore.stub('store').and_return('foobar')
       end
-      it { subject.store.should eq RequestStore.store }
+      it { expect(subject.store).to eq RequestStore.store }
     end
     context 'when RequestStore is not defined' do
-      before{ hide_const('RequestStore') }
-      it { subject.store.should eq Thread.current }
+      before { hide_const('RequestStore') }
+      it { expect(subject.store).to eq Thread.current }
     end
   end
 
   describe '#userstamp_key' do
     context 'when model is a Class' do
-      subject{ Mongoid::Userstamp.userstamp_key(User) }
-      it{ should eq :"mongoid_userstamp/user" }
+      subject { Mongoid::Userstamp.userstamp_key(User) }
+      it { is_expected.to eq :'mongoid_userstamp/user' }
     end
     context 'when model is a String' do
-      subject{ Mongoid::Userstamp.userstamp_key('MyNamespace::User') }
-      it{ should eq :"mongoid_userstamp/my_namespace/user" }
+      subject { Mongoid::Userstamp.userstamp_key('MyNamespace::User') }
+      it { is_expected.to eq :'mongoid_userstamp/my_namespace/user' }
     end
   end
 end

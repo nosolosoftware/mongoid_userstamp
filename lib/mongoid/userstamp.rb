@@ -1,7 +1,6 @@
-# -*- encoding : utf-8 -*-
+# frozen_string_literal: true
 
 module Mongoid
-
   module Userstamp
     extend ActiveSupport::Concern
 
@@ -9,29 +8,22 @@ module Mongoid
       Mongoid::Userstamp.add_model_class(self)
     end
 
-    module ClassMethods
-
-      def mongoid_userstamp(opts = {})
-        mongoid_userstamp_config(opts)
-        self.send(:include, Mongoid::Userstamp::Model) unless self.included_modules.include?(Mongoid::Userstamp::Model)
+    class_methods do
+      def userstamp(options = {})
+        _userstamp_model_config(options)
+        include Mongoid::Userstamp::Model
       end
 
-      def mongoid_userstamp_config(opts = {})
-        @mongoid_userstamp_config ||= Mongoid::Userstamp::ModelConfig.new(opts)
+      def _userstamp_model_config(options = {})
+        @_userstamp_model_config ||= Mongoid::Userstamp::ModelConfig.new(options)
       end
     end
 
     class << self
-
       def config(&block)
-        @config ||= Mongoid::Userstamp::GemConfig.new(&block)
+        @config ||= Mongoid::Userstamp::GlobalConfig.new(&block)
       end
-
-      # @deprecated
-      def configure(&block)
-        warn 'Mongoid::Userstamp.configure is deprecated. Please use Mongoid::Userstamp.config instead'
-        config(&block)
-      end
+      alias configure config
 
       def current_user(user_class = nil)
         user_class ||= user_classes.first
@@ -49,7 +41,7 @@ module Mongoid
       end
 
       def model_classes
-        (@model_classes || []).map{|c| c.is_a?(Class) ? c : c.to_s.classify.constantize }
+        (@model_classes || []).map {|c| c.is_a?(Class) ? c : c.to_s.classify.constantize }
       end
 
       def add_model_class(model)
@@ -58,7 +50,7 @@ module Mongoid
       end
 
       def user_classes
-        (@user_classes || []).map{|c| c.is_a?(Class) ? c : c.to_s.classify.constantize }
+        (@user_classes || []).map {|c| c.is_a?(Class) ? c : c.to_s.classify.constantize }
       end
 
       def add_user_class(user)

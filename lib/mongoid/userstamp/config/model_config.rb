@@ -1,27 +1,26 @@
-# -*- encoding : utf-8 -*-
+# frozen_string_literal: true
 
 module Mongoid
-module Userstamp
+  module Userstamp
+    class ModelConfig
+      def initialize(options = {})
+        @user_class_name = options.delete(:user_class_name)
+        @created_by_field = options.delete(:created_by_field)
+        @updated_by_field = options.delete(:updated_by_field)
+        raise ArgumentError.new("Invalid keys found: #{options.keys.join(', ')}") unless options.empty?
+      end
 
-  class ModelConfig
+      def user_class_name
+        @user_class_name || Mongoid::Userstamp.user_classes.first.to_s
+      end
 
-    def initialize(opts = {})
-      @user_model   = opts.delete(:user_model)
-      @created_name = opts.delete(:created_name)
-      @updated_name = opts.delete(:updated_name)
-    end
+      def created_by_field
+        @created_by_field || Mongoid::Userstamp.config.created_by_field
+      end
 
-    def user_model
-      @user_model || Mongoid::Userstamp.user_classes.first
-    end
-
-    def created_name
-      @created_name || Mongoid::Userstamp.config.created_name
-    end
-
-    def updated_name
-      @updated_name || Mongoid::Userstamp.config.updated_name
+      def updated_by_field
+        @updated_by_field || Mongoid::Userstamp.config.updated_by_field
+      end
     end
   end
-end
 end
